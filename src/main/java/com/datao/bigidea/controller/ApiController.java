@@ -54,7 +54,7 @@ public class ApiController {
      */
     @RequestMapping(value = "/math/getNum", method = RequestMethod.POST)
     @ResponseBody
-    public ResEnv<List<String>> getNum(@RequestBody String content, Integer minSize, Integer maxSize) {
+    public ResEnv<List<String>> getNum(String content, Integer minSize, Integer maxSize) {
         try {
             List<String> result = apiService.getNum(content, minSize, maxSize);
             return ResEnv.success(result);
