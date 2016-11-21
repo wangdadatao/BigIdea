@@ -20,16 +20,8 @@ import java.util.Set;
 import org.wltea.analyzer.core.IKSegmenter;
 import org.wltea.analyzer.core.Lexeme;
 
-/**
- *
- * <p>Title:TfIdfAlgorithm</p>
- * <p>Description: tf-idf算法实现
- * </p>
- * @createDate：2013-8-25
- * @author xq
- * @version 1.0
- */
-public class TfIdfAlgorithm {
+
+public class TFIDF {
     /**
      * 文件名保存在list
      */
@@ -372,7 +364,7 @@ public class TfIdfAlgorithm {
     public static void main(String[] args){
 
         System.out.println("tf--------------------------------------");
-        Map<String, Map<String, Double>> allTfMap=TfIdfAlgorithm.allTf("d://dir");
+        Map<String, Map<String, Double>> allTfMap=TFIDF.allTf("C:\\test");
         Set<String> fileList=allTfMap.keySet();
         for(String filePath : fileList){
             Map<String, Double> tfMap=allTfMap.get(filePath);
@@ -383,14 +375,14 @@ public class TfIdfAlgorithm {
         }
 
         System.out.println("idf--------------------------------------");
-        Map<String, Double> idfMap=TfIdfAlgorithm.idf(allSegsMap);
+        Map<String, Double> idfMap=TFIDF.idf(allSegsMap);
         Set<String> words=idfMap.keySet();
         for(String word : words){
             System.out.println("word:"+word+"     tf:"+idfMap.get(word));
         }
 
         System.out.println("tf-idf--------------------------------------");
-        Map<String, Map<String, Double>> tfIdfMap=TfIdfAlgorithm.tfIdf(allTfMap, idfMap);
+        Map<String, Map<String, Double>> tfIdfMap=TFIDF.tfIdf(allTfMap, idfMap);
         Set<String> files=tfIdfMap.keySet();
         for(String filePath : files){
             Map<String, Double> tfIdf=tfIdfMap.get(filePath);

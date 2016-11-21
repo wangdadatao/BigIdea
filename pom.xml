@@ -293,12 +293,6 @@
             <version>1.0.3</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.wltea.ik-analyzer</groupId>
-            <artifactId>ik-analyzer</artifactId>
-            <version>3.2.8</version>
-        </dependency>
-
 
     </dependencies>
 

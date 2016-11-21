@@ -62,7 +62,7 @@ public class Similarity {
     }
 
 
-    public static double getSimilarity(String doc1, String doc2) {
+    public static double getConSimilarity(String doc1, String doc2) {
         if (doc1 != null && doc1.trim().length() > 0 && doc2 != null
                 && doc2.trim().length() > 0) {
 

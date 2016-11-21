@@ -93,7 +93,7 @@ public class ApiServiceImpl extends BaseService implements ApiService {
             return result;
         }
         result.put("LevenshteinDistance", String.valueOf(Similarity.LDistance(text1, text2)));
-
+        result.put("Cosine", String.valueOf(Similarity.getConSimilarity(text1, text2)));
 
         return result;
 
