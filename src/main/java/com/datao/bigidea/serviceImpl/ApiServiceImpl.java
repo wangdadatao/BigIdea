@@ -1,6 +1,7 @@
 package com.datao.bigidea.serviceImpl;
 
 import com.datao.bigidea.exception.ParamsException;
+import com.datao.bigidea.utils.Similarity;
 import com.datao.bigidea.utils.contentextractor.ContentExtractor;
 import com.datao.bigidea.utils.contentextractor.News;
 import com.datao.bigidea.serviceImpl.service.ApiService;
@@ -40,7 +41,7 @@ public class ApiServiceImpl extends BaseService implements ApiService {
     /**
      * 提取文本中的数字
      *
-     * @param content     文本内容
+     * @param content 文本内容
      * @param minSize 提取规则:数字的最小长度
      * @param maxSize 提取规则:数字的最大长度
      * @return 结果集
@@ -73,5 +74,28 @@ public class ApiServiceImpl extends BaseService implements ApiService {
         }
 
         return result;
+    }
+
+    /**
+     * 两个字符串的相似度
+     *
+     * @param text1 文本1
+     * @param text2 文本2
+     * @return 结果集
+     */
+    @Override
+    public Map<String, String> getSimilarity(String text1, String text2) {
+        Map<String, String> result = Maps.newHashMap();
+
+        if (text1.length() > 2000 || text2.length() > 2000) {
+            result.put("status", "false");
+            result.put("msg", "本文过大!对比文本不能超过2000字符");
+            return result;
+        }
+        result.put("LevenshteinDistance", String.valueOf(Similarity.LDistance(text1, text2)));
+
+
+        return result;
+
     }
 }

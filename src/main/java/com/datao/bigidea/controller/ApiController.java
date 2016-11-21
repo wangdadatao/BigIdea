@@ -47,7 +47,7 @@ public class ApiController {
     /**
      * 提取文章中的数字
      *
-     * @param content     文本
+     * @param content 文本
      * @param minSize 提取规则: 数字的最小长度
      * @param maxSize 提取规则: 数字的最大长度
      * @return
@@ -65,5 +65,24 @@ public class ApiController {
         }
     }
 
+    /**
+     * 比较两个文本的相似度
+     *
+     * @param text1 文本一
+     * @param text2 文本二
+     * @return
+     */
+    @RequestMapping(value = "/text/getSimilarity", method = RequestMethod.POST)
+    @ResponseBody
+    public ResEnv<Map<String,String>> getNum(String text1, String text2) {
+        try {
+            Map<String,String> result = apiService.getSimilarity(text1, text2);
+            return ResEnv.success(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("根据URL提取网页正文时失败!" + e);
+            return ResEnv.fail(e);
+        }
+    }
 
 }

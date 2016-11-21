@@ -25,4 +25,13 @@ public interface ApiService {
      * @return 结果
      */
     List<String> getNum(String content, Integer minSize, Integer maxSize);
+
+    /**
+     * 对比两个字符串的相似度
+     *
+     * @param text1 文本1
+     * @param text2 文本2
+     * @return
+     */
+    Map<String,String> getSimilarity(String text1, String text2);
 }
