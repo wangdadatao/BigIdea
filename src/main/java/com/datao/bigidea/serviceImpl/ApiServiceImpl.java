@@ -3,7 +3,7 @@ package com.datao.bigidea.serviceImpl;
 import com.datao.bigidea.exception.ParamsException;
 import com.datao.bigidea.utils.Similarity;
 import com.datao.bigidea.utils.contentextractor.ContentExtractor;
-import com.datao.bigidea.utils.contentextractor.News;
+import com.datao.bigidea.entity.News;
 import com.datao.bigidea.serviceImpl.service.ApiService;
 import com.google.common.collect.Maps;
 import org.springframework.stereotype.Service;

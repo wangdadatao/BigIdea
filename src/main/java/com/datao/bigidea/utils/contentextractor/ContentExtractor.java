@@ -1,5 +1,6 @@
 package com.datao.bigidea.utils.contentextractor;
 
+import com.datao.bigidea.entity.News;
 import com.datao.bigidea.utils.contentextractor.net.HttpRequest;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

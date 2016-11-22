@@ -3,3 +3,4 @@
 target/
 bigidea.iml
 logs/
+src/test/resources/
