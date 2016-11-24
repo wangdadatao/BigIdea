@@ -1,6 +1,7 @@
 package com.datao.bigidea.mapper;
 
 import com.datao.bigidea.entity.News;
+import com.datao.bigidea.entity.WordsTFIDF;
 
 import java.util.List;
 
@@ -29,4 +30,11 @@ public interface NewsMapper {
      * @param n
      */
     void update(News n);
+
+    /**
+     * 插入新的TFIDF
+     *
+     * @param word
+     */
+    void insertWords(List<WordsTFIDF> word);
 }

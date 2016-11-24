@@ -7,27 +7,27 @@
         INSERT INTO test_blog
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="url != null and url != ''">url ,</if>
-            <if test="url != null and url != ''">title,</if>
-            <if test="url != null and url != ''">content,</if>
-            <if test="url != null and url != ''">`time`,</if>
-            <if test="url != null and url != ''">contentEle,</if>
-            <if test="url != null and url != ''">createTime,</if>
-            <if test="url != null and url != ''">`type`,</if>
+            <if test="title != null and title != ''">title,</if>
+            <if test="content != null and content != ''">content,</if>
+            <if test="time != null and time != ''">`time`,</if>
+            <if test="contentEle != null and contentEle != ''">contentEle,</if>
+            <if test="createTime != null and createTime != ''">createTime,</if>
+            <if test="type != null and type != ''">`type`,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="url != null and url != ''">#{url},</if>
-            <if test="url != null and url != ''">#{title},</if>
-            <if test="url != null and url != ''">#{content},</if>
-            <if test="url != null and url != ''">#{time},</if>
-            <if test="url != null and url != ''">#{contentEle},</if>
-            <if test="url != null and url != ''">#{createTime},</if>
-            <if test="url != null and url != ''">#{type}</if>
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="content != null and content != ''">#{content},</if>
+            <if test="time != null and time != ''">#{time},</if>
+            <if test="contentEle != null and contentEle != ''">#{contentEle},</if>
+            <if test="createTime != null and createTime != ''">#{createTime},</if>
+            <if test="type != null and type != ''">#{type}</if>
         </trim>
     </insert>
 
     <!--查询所有的News-->
     <select id="queryAllNews" resultType="com.datao.bigidea.entity.News">
-        SELECT * FROM test_blog WHERE `time` IS NULL
+        SELECT * FROM test_blog WHERE `time` IS NOT NULL
     </select>
 
     <!--更新News-->
@@ -35,14 +35,27 @@
         UPDATE test_blog
         <set>
             <if test="url != null and url != ''">url = #{url} ,</if>
-            <if test="url != null and url != ''">title = #{title},</if>
-            <if test="url != null and url != ''">content = #{content},</if>
-            <if test="url != null and url != ''">`time` = #{time},</if>
-            <if test="url != null and url != ''">contentEle = #{contentEle},</if>
-            <if test="url != null and url != ''">createTime = #{createTime},</if>
-            <if test="url != null and url != ''">`type` = #{type},</if>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="content != null and content != ''">content = #{content},</if>
+            <if test="time != null and time != ''">`time` = #{time},</if>
+            <if test="contentEle != null and contentEle != ''">contentEle = #{contentEle},</if>
+            <if test="createTime != null and createTime != ''">createTime = #{createTime},</if>
+            <if test="type != null and type != ''">`type` = #{type},</if>
         </set>
         WHERE id = #{id}
     </update>
+
+    <insert id="insertWords" parameterType="com.datao.bigidea.entity.WordsTFIDF">
+        INSERT INTO test_blog_words
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            blogID, words, thisNum, articleNum, allNum, TF, IDF, TFIDF
+        </trim>
+        VALUES
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.blogID}, #{item.words}, #{item.thisNum}, #{item.articleNum}, #{item.allNum}, #{item.TF}, #{item.IDF}, #{item.TFIDF}
+            </trim>
+        </foreach>
+    </insert>
 
 </mapper>

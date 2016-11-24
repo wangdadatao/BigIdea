@@ -1,13 +1,19 @@
 package com.datao.bigidea.test;
 
 import com.datao.bigidea.BaseTest;
+import com.datao.bigidea.entity.News;
+import com.datao.bigidea.entity.WordsTFIDF;
+import com.datao.bigidea.mapper.NewsMapper;
 import com.datao.bigidea.utils.Similarity;
 import com.datao.bigidea.utils.TFIDF;
+import com.google.common.collect.Maps;
 import org.eclipse.jetty.util.ajax.JSON;
 import org.junit.Test;
+import org.junit.runner.Result;
 import org.wltea.analyzer.core.IKSegmenter;
 import org.wltea.analyzer.core.Lexeme;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
@@ -18,6 +24,8 @@ import java.util.*;
  */
 public class SimilarityTest extends BaseTest {
 
+    @Resource
+    private NewsMapper newsMapper;
 
     @Test
     public void testSplit() {
@@ -97,7 +105,272 @@ public class SimilarityTest extends BaseTest {
         System.out.println(JSON.toString(first));
         System.out.println(JSON.toString(second));
         System.out.println(sumUp / reDown);
+    }
 
+    @Test
+    public void testTFIDF() {
+        List<News> newses = newsMapper.queryAllNews();
+
+        Map<String, Map<String, Integer>> fre = Maps.newHashMap();
+        for (News n : newses) {
+            fre.put(n.getId().toString(), TFIDF.segStr(n.getContent()));
+        }
+
+
+        Map<String, Map<String, Double>> freTF = Maps.newHashMap();
+        Map<String, Map<String, Double>> freIDF = Maps.newHashMap();
+        Map<String, Map<String, Double>> TFIDF = Maps.newHashMap();
+
+
+        freTF = getTF(fre);
+
+        Integer articleNum = newses.size();
+        freIDF = getIDF(fre, articleNum);
+
+        TFIDF = getTFIDF(freTF, freIDF);
+
+        saveTFIDF(fre, freTF, freIDF, TFIDF);
+
+
+
+
+     /*   Map<String, Integer> allFre = Maps.newHashMap();
+        Set<String> keyTitles = fre.keySet();
+
+
+
+
+        for (String s : keyTitles) {
+            Set<String> keyWords = fre.get(s).keySet();
+
+            for (String k : keyWords) {
+                if (allFre.containsKey(k)) {
+                    allFre.put(k, allFre.get(k) + fre.get(s).get(k));
+                } else {
+                    allFre.put(k, fre.get(s).get(k));
+                }
+            }
+        }
+
+        Set<String> sh = allFre.keySet();
+        for (String s : sh) {
+            System.out.println(s + " -- " + allFre.get(s));
+        }*/
+    }
+
+    private Map<String, List<WordsTFIDF>> getWords(Map<String, Map<String, Integer>> fre) {
+
+        Map<String, List<WordsTFIDF>> result = Maps.newHashMap();
+
+        Set<String> ids = fre.keySet();
+        for (String s : ids) {
+            List<WordsTFIDF> wordslist = new ArrayList<>();
+
+            Map<String, Integer> fr = fre.get(s);
+            Set<String> wordsl = fr.keySet();
+            for (String t : wordsl) {
+
+                WordsTFIDF w = new WordsTFIDF();
+                w.setWords(t);
+                w.setBlogID(Integer.valueOf(s));
+                w.setThisNum(fr.get(t));
+
+                for (String r : ids) {
+
+                    Integer articleNum = 0;
+                    for (String i : ids) {
+                        Map<String, Integer> articles = fre.get(r);
+                        if (articles.containsKey(t)) {
+                            articleNum++;
+                        }
+                    }
+                    w.setArticleNum(articleNum);
+
+                    Integer allNum = 0;
+                    for (String i : ids) {
+                        Map<String, Integer> articles = fre.get(r);
+                        if (articles.containsKey(t)) {
+                            allNum += articles.get(t);
+                        }
+                    }
+                    w.setAllNum(allNum);
+
+                }
+                wordslist.add(w);
+            }
+            result.put(s, wordslist);
+        }
+        return result;
+    }
+
+
+    /**
+     * 得到 TF 词频
+     *
+     * @param fre
+     * @return
+     */
+    public Map<String, Map<String, Double>> getTF(Map<String, Map<String, Integer>> fre) {
+        Map<String, Map<String, Double>> result = Maps.newHashMap();
+
+        Set<String> keys = fre.keySet();
+        for (String s : keys) {
+            Map<String, Integer> fr = fre.get(s);
+            Integer allWords = 0;
+
+            Map<String, Double> tf = Maps.newHashMap();
+
+            Set<String> wordList = fr.keySet();
+            for (String t : wordList) {
+                allWords += fr.get(t);
+            }
+
+            for (String t : wordList) {
+                tf.put(t, Double.valueOf(fr.get(t)) / Double.valueOf(allWords));
+            }
+
+            result.put(s, tf);
+        }
+
+        return result;
+    }
+
+    /**
+     * 计算 IDF
+     *
+     * @param fre
+     * @param num
+     * @return
+     */
+    public Map<String, Map<String, Double>> getIDF(Map<String, Map<String, Integer>> fre, Integer num) {
+        Map<String, Map<String, Double>> result = Maps.newHashMap();
+
+        Set<String> keys = fre.keySet();
+        for (String s : keys) {
+            Map<String, Integer> article = fre.get(s);
+            Set<String> artKeys = article.keySet();
+
+            Map<String, Double> IDF = Maps.newHashMap();
+            for (String t : artKeys) {
+
+                Integer mark = 0;
+                for (String r : keys) {
+                    Map<String, Integer> articles = fre.get(r);
+                    if (articles.containsKey(t)) {
+                        mark++;
+                    }
+                }
+                IDF.put(t, Math.log(num) / Math.log(mark + 1));
+            }
+            result.put(s, IDF);
+        }
+        return result;
+    }
+
+
+    /**
+     * 计算TF_IDF
+     *
+     * @param TF  词频
+     * @param IDF 逆文档率
+     * @return
+     */
+    public Map<String, Map<String, Double>> getTFIDF(Map<String, Map<String, Double>> TF, Map<String, Map<String, Double>> IDF) {
+        Map<String, Map<String, Double>> result = Maps.newHashMap();
+
+        Set<String> keys = TF.keySet();
+
+        for (String s : keys) {
+            Map<String, Double> TFIDF = Maps.newHashMap();
+
+            Map<String, Double> tf = TF.get(s);
+            Map<String, Double> idf = IDF.get(s);
+
+            Set<String> keyList = tf.keySet();
+            for (String t : keyList) {
+                TFIDF.put(t, tf.get(t) * idf.get(t));
+                System.out.println(s + "\t\t --  " + t + "\t\t\t" + TFIDF.get(t));
+            }
+            result.put(s, TFIDF);
+        }
+
+        return result;
+    }
+
+    /**
+     * 保存TFIDF
+     *
+     * @param freTF
+     * @param freIDF
+     * @param tfidf
+     */
+    private void saveTFIDF(
+            Map<String, Map<String, Integer>> fre,
+            Map<String, Map<String, Double>> freTF,
+            Map<String, Map<String, Double>> freIDF,
+            Map<String, Map<String, Double>> tfidf) {
+
+        Set<String> titles = tfidf.keySet();
+
+        for (String s : titles) {
+            Map<String, Integer> fr = fre.get(s);
+            Map<String, Double> ti = tfidf.get(s);
+            Map<String, Double> ft = freTF.get(s);
+            Map<String, Double> fd = freIDF.get(s);
+
+            Set<String> tWord = fr.keySet();
+
+            List<WordsTFIDF> words = new ArrayList<>();
+
+            Integer i = 0;
+            for (String t : tWord) {
+                WordsTFIDF word = new WordsTFIDF();
+
+                word.setBlogID(Integer.valueOf(s));
+                word.setWords(t);
+                word.setTF(ft.get(t));
+                word.setIDF(fd.get(t));
+                word.setTFIDF(ti.get(t));
+                word.setThisNum(fr.get(t));
+
+                for (String r : titles) {
+
+                    Integer articleNum = 0;
+                    for (String n : titles) {
+                        Map<String, Integer> articles = fre.get(n);
+                        if (articles.containsKey(t)) {
+                            articleNum++;
+                        }
+                    }
+                    word.setArticleNum(articleNum);
+
+                    Integer allNum = 0;
+                    for (String n : titles) {
+                        Map<String, Integer> articles = fre.get(n);
+                        if (articles.containsKey(t)) {
+                            allNum += articles.get(t);
+                        }
+                    }
+                    word.setAllNum(allNum);
+
+                }
+
+
+                words.add(word);
+                i++;
+            }
+            newsMapper.insertWords(words);
+        }
+
+
+    }
+
+    @Test
+    public void testMath() {
+        Integer i = 2;
+        Integer j = 329;
+        Double m = Double.valueOf(i / j);
+        System.out.println(m);
     }
 
 }

@@ -101,8 +101,6 @@ public class SpiderTest extends BaseTest {
         List<News> newses = spiderService.queryAllNews();
         for (News n : newses) {
             try {
-               /* Document document = Jsoup.connect(n.getUrl()).get();
-                System.out.println(document.body());*/
                 News news = ContentExtractor.getNewsByUrl(n.getUrl());
                 n.setContentEle(news.getContentElement().toString());
                 n.setContent(news.getContent());
@@ -116,11 +114,13 @@ public class SpiderTest extends BaseTest {
                     System.out.println(n.getUrl());
                     return;
                 }
-
                 System.out.println(n.getUrl());
             }
         }
+    }
 
+    @Test
+    public void testSpiderUrl(){
 
     }
 }
