@@ -4,7 +4,7 @@
 
     <!--插入新的信息-->
     <insert id="insert" parameterType="com.datao.bigidea.entity.News">
-        INSERT INTO test_blog
+        INSERT INTO spider_blog
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="url != null and url != ''">url ,</if>
             <if test="title != null and title != ''">title,</if>
@@ -27,12 +27,12 @@
 
     <!--查询所有的News-->
     <select id="queryAllNews" resultType="com.datao.bigidea.entity.News">
-        SELECT * FROM test_blog WHERE `time` IS NOT NULL
+        SELECT * FROM spider_blog WHERE `time` IS NOT NULL
     </select>
 
     <!--更新News-->
     <update id="update" parameterType="com.datao.bigidea.entity.News">
-        UPDATE test_blog
+        UPDATE spider_blog
         <set>
             <if test="url != null and url != ''">url = #{url} ,</if>
             <if test="title != null and title != ''">title = #{title},</if>
@@ -46,7 +46,7 @@
     </update>
 
     <insert id="insertWords" parameterType="com.datao.bigidea.entity.WordsTFIDF">
-        INSERT INTO test_blog_words
+        INSERT INTO spider_blog_words
         <trim prefix="(" suffix=")" suffixOverrides=",">
             blogID, words, thisNum, articleNum, allNum, TF, IDF, TFIDF
         </trim>

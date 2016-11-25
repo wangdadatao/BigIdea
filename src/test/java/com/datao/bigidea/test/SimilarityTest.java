@@ -8,8 +8,8 @@ import com.datao.bigidea.utils.Similarity;
 import com.datao.bigidea.utils.TFIDF;
 import com.google.common.collect.Maps;
 import org.eclipse.jetty.util.ajax.JSON;
+import org.joda.time.DateTime;
 import org.junit.Test;
-import org.junit.runner.Result;
 import org.wltea.analyzer.core.IKSegmenter;
 import org.wltea.analyzer.core.Lexeme;
 
@@ -26,6 +26,9 @@ public class SimilarityTest extends BaseTest {
 
     @Resource
     private NewsMapper newsMapper;
+
+    @Resource
+    private TFIDF tfidf;
 
     @Test
     public void testSplit() {
@@ -64,9 +67,9 @@ public class SimilarityTest extends BaseTest {
         String str1 = "我喜欢看电视，不喜欢看电影"; //"你看起开很好吃吗,我要吃了你,哈哈";
         String str2 = "我不喜欢看电视，也不喜欢看电影。"; //"你看起开不好吃吗,我不要吃你,哼哼";
 
-        Map<String, Integer> all = TFIDF.segStr(str1 + str2);
-        Map<String, Integer> re1 = TFIDF.segStr(str1);
-        Map<String, Integer> re2 = TFIDF.segStr(str2);
+        Map<String, Integer> all = TFIDF.strNum(str1 + str2);
+        Map<String, Integer> re1 = TFIDF.strNum(str1);
+        Map<String, Integer> re2 = TFIDF.strNum(str2);
 
         List<Integer> first = new ArrayList<>();
         List<Integer> second = new ArrayList<>();
@@ -113,94 +116,16 @@ public class SimilarityTest extends BaseTest {
 
         Map<String, Map<String, Integer>> fre = Maps.newHashMap();
         for (News n : newses) {
-            fre.put(n.getId().toString(), TFIDF.segStr(n.getContent()));
+            fre.put(n.getId().toString(), TFIDF.strNum(n.getContent()));
         }
 
 
-        Map<String, Map<String, Double>> freTF = Maps.newHashMap();
-        Map<String, Map<String, Double>> freIDF = Maps.newHashMap();
-        Map<String, Map<String, Double>> TFIDF = Maps.newHashMap();
-
-
-        freTF = getTF(fre);
-
-        Integer articleNum = newses.size();
-        freIDF = getIDF(fre, articleNum);
-
-        TFIDF = getTFIDF(freTF, freIDF);
+        Map<String, Map<String, Double>> freTF = getTF(fre);
+        Map<String, Map<String, Double>> freIDF = getIDF(fre);
+        Map<String, Map<String, Double>> TFIDF = getTFIDF(freTF, freIDF);
 
         saveTFIDF(fre, freTF, freIDF, TFIDF);
 
-
-
-
-     /*   Map<String, Integer> allFre = Maps.newHashMap();
-        Set<String> keyTitles = fre.keySet();
-
-
-
-
-        for (String s : keyTitles) {
-            Set<String> keyWords = fre.get(s).keySet();
-
-            for (String k : keyWords) {
-                if (allFre.containsKey(k)) {
-                    allFre.put(k, allFre.get(k) + fre.get(s).get(k));
-                } else {
-                    allFre.put(k, fre.get(s).get(k));
-                }
-            }
-        }
-
-        Set<String> sh = allFre.keySet();
-        for (String s : sh) {
-            System.out.println(s + " -- " + allFre.get(s));
-        }*/
-    }
-
-    private Map<String, List<WordsTFIDF>> getWords(Map<String, Map<String, Integer>> fre) {
-
-        Map<String, List<WordsTFIDF>> result = Maps.newHashMap();
-
-        Set<String> ids = fre.keySet();
-        for (String s : ids) {
-            List<WordsTFIDF> wordslist = new ArrayList<>();
-
-            Map<String, Integer> fr = fre.get(s);
-            Set<String> wordsl = fr.keySet();
-            for (String t : wordsl) {
-
-                WordsTFIDF w = new WordsTFIDF();
-                w.setWords(t);
-                w.setBlogID(Integer.valueOf(s));
-                w.setThisNum(fr.get(t));
-
-                for (String r : ids) {
-
-                    Integer articleNum = 0;
-                    for (String i : ids) {
-                        Map<String, Integer> articles = fre.get(r);
-                        if (articles.containsKey(t)) {
-                            articleNum++;
-                        }
-                    }
-                    w.setArticleNum(articleNum);
-
-                    Integer allNum = 0;
-                    for (String i : ids) {
-                        Map<String, Integer> articles = fre.get(r);
-                        if (articles.containsKey(t)) {
-                            allNum += articles.get(t);
-                        }
-                    }
-                    w.setAllNum(allNum);
-
-                }
-                wordslist.add(w);
-            }
-            result.put(s, wordslist);
-        }
-        return result;
     }
 
 
@@ -239,11 +164,12 @@ public class SimilarityTest extends BaseTest {
      * 计算 IDF
      *
      * @param fre
-     * @param num
      * @return
      */
-    public Map<String, Map<String, Double>> getIDF(Map<String, Map<String, Integer>> fre, Integer num) {
+    public Map<String, Map<String, Double>> getIDF(Map<String, Map<String, Integer>> fre) {
         Map<String, Map<String, Double>> result = Maps.newHashMap();
+
+        Integer num = fre.size();
 
         Set<String> keys = fre.keySet();
         for (String s : keys) {
@@ -311,6 +237,8 @@ public class SimilarityTest extends BaseTest {
             Map<String, Map<String, Double>> tfidf) {
 
         Set<String> titles = tfidf.keySet();
+        Map<String, Integer> allNum = getAllNum(fre);
+        Map<String, Integer> articleNum = getArticleNum(fre);
 
         for (String s : titles) {
             Map<String, Integer> fr = fre.get(s);
@@ -332,28 +260,8 @@ public class SimilarityTest extends BaseTest {
                 word.setIDF(fd.get(t));
                 word.setTFIDF(ti.get(t));
                 word.setThisNum(fr.get(t));
-
-                for (String r : titles) {
-
-                    Integer articleNum = 0;
-                    for (String n : titles) {
-                        Map<String, Integer> articles = fre.get(n);
-                        if (articles.containsKey(t)) {
-                            articleNum++;
-                        }
-                    }
-                    word.setArticleNum(articleNum);
-
-                    Integer allNum = 0;
-                    for (String n : titles) {
-                        Map<String, Integer> articles = fre.get(n);
-                        if (articles.containsKey(t)) {
-                            allNum += articles.get(t);
-                        }
-                    }
-                    word.setAllNum(allNum);
-
-                }
+                word.setArticleNum(articleNum.get(t));
+                word.setAllNum(allNum.get(t));
 
 
                 words.add(word);
@@ -365,12 +273,63 @@ public class SimilarityTest extends BaseTest {
 
     }
 
+    private Map<String, Integer> getArticleNum(Map<String, Map<String, Integer>> fre) {
+        Map<String, Integer> result = Maps.newHashMap();
+
+        Set<String> keys = fre.keySet();
+
+        for (String s : keys) {
+            Map<String, Integer> fr = fre.get(s);
+
+            Set<String> words = fr.keySet();
+            for (String t : words) {
+                if (result.containsKey(t)) {
+                    result.put(t, result.get(t) + 1);
+                } else {
+                    result.put(t, 1);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    public Map<String, Integer> getAllNum(Map<String, Map<String, Integer>> fre) {
+
+        System.out.println(new DateTime().toString("HH:mm:ss"));
+
+        Map<String, Integer> result = Maps.newHashMap();
+
+        Set<String> keys = fre.keySet();
+        for (String s : keys) {
+            Map<String, Integer> fr = fre.get(s);
+
+            Set<String> words = fr.keySet();
+            for (String t : words) {
+                if (result.containsKey(t)) {
+                    result.put(t, result.get(t) + fr.get(t));
+                } else {
+                    result.put(t, fr.get(t));
+                }
+            }
+        }
+
+        return result;
+    }
+
     @Test
     public void testMath() {
         Integer i = 2;
         Integer j = 329;
         Double m = Double.valueOf(i / j);
         System.out.println(m);
+    }
+
+    @Test
+    public void testWords() {
+        List<News> newsList = newsMapper.queryAllNews();
+        tfidf.Innit(newsList);
+        tfidf.saveTFIDF();
     }
 
 }

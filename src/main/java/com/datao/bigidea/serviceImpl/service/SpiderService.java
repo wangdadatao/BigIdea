@@ -1,6 +1,7 @@
 package com.datao.bigidea.serviceImpl.service;
 
 import com.datao.bigidea.entity.News;
+import com.datao.bigidea.entity.WordsTFIDF;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface SpiderService {
      * @param n
      */
     void update(News n);
+
+    void insertWords(List<WordsTFIDF> words);
 }

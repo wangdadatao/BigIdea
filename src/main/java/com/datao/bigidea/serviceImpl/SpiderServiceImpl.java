@@ -1,6 +1,7 @@
 package com.datao.bigidea.serviceImpl;
 
 import com.datao.bigidea.entity.News;
+import com.datao.bigidea.entity.WordsTFIDF;
 import com.datao.bigidea.mapper.NewsMapper;
 import com.datao.bigidea.serviceImpl.service.SpiderService;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class SpiderServiceImpl implements SpiderService {
         newsMapper.update(n);
     }
 
-
-
+    public void insertWords(List<WordsTFIDF> words) {
+        newsMapper.insertWords(words);
+    }
 }
