@@ -7,4 +7,9 @@
         SELECT `type` from b_note GROUP BY `type`
     </select>
 
+    <!--根据ID查询博客-->
+    <select id="queryByID" resultType="com.datao.bigidea.entity.Note">
+        SELECT * FROM b_note where id = #{id}
+    </select>
+
 </mapper>

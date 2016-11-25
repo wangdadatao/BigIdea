@@ -1,5 +1,6 @@
 package com.datao.bigidea.serviceImpl;
 
+import com.datao.bigidea.entity.Note;
 import com.datao.bigidea.mapper.NoteMapper;
 import com.datao.bigidea.serviceImpl.service.NoteService;
 import org.springframework.stereotype.Service;
@@ -25,5 +26,16 @@ public class NoteServiceImpl extends BaseService implements NoteService {
     @Override
     public List<String> queryTypes() {
        return noteMapper.queryTypes();
+    }
+
+    /**
+     * 根据ID查询博客
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Note queryByID(Integer id) {
+        return noteMapper.queryByID(id);
     }
 }

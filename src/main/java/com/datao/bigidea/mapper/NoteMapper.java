@@ -1,5 +1,7 @@
 package com.datao.bigidea.mapper;
 
+import com.datao.bigidea.entity.Note;
+
 import java.util.List;
 
 /**
@@ -13,4 +15,14 @@ public interface NoteMapper {
      * @return
      */
     List<String> queryTypes();
+
+    /**
+     * 根据ID查询博客
+     *
+     * @param id
+     * @return
+     */
+    Note queryByID(Integer id);
+
+
 }
