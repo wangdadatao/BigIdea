@@ -1,13 +1,31 @@
 package com.datao.bigidea.test;
 
+import com.datao.bigidea.entity.News;
+import com.datao.bigidea.mapper.NewsMapper;
 import com.datao.bigidea.serviceImpl.BaseService;
+import com.datao.bigidea.utils.contentextractor.ContentExtractor;
+import com.google.common.collect.Maps;
+import org.apache.commons.lang.ObjectUtils;
+import org.eclipse.jetty.util.ajax.JSON;
+import org.joda.time.DateTime;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.Test;
+
+import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.*;
 
 
 /**
  * Created by 王 海涛 on 2016/11/19.
  */
 public class DaTaoTest extends BaseService {
+
+    @Resource
+    private NewsMapper newsMapper;
 
     @Test
     public void testNewName() {
@@ -81,6 +99,104 @@ public class DaTaoTest extends BaseService {
             int b = (int) Math.abs(namelist.length * Math.random());
             String name = firsname[a] + namelist[b];
             System.out.println(name);
+        }
+    }
+
+    @Test
+    public void testSpider() {
+        String baseUrl = "https://www.oschina.net/blog";
+
+        Map<String, String> navUrl = getNav(getDoc(baseUrl));
+        Map<String, Map<String, String>> urls = getUrls(navUrl);
+
+        saveNews(urls);
+
+
+    }
+
+    /**
+     * 保存数据
+     *
+     * @param allUrl
+     */
+    private void saveNews(Map<String, Map<String, String>> allUrl) {
+
+        Set<String> navUrl = allUrl.keySet();
+        for (String s : navUrl) {
+            Map<String, String> kw = allUrl.get(s);
+            Set<String> urls = kw.keySet();
+            for (String t : urls) {
+                try {
+                    News news = ContentExtractor.getNewsByUrl(t);
+                    news.setFroms("开源中国");
+                    news.setCreateTime(new DateTime().toString("yyyy-MM-dd HH:mm:ss"));
+                    news.setType(s);
+                    news.setTitle(kw.get(t));
+                    // newsMapper.insert(news);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+    }
+
+    /**
+     * 获取所有分类下的所有连接
+     *
+     * @param navUrl
+     * @return
+     */
+    private Map<String, Map<String, String>> getUrls(Map<String, String> navUrl) {
+        Map<String, Map<String, String>> result = Maps.newHashMap();
+
+        Set<String> urls = navUrl.keySet();
+        for (String s : urls) {
+            Map<String, String> kw = Maps.newHashMap();
+
+            Set<String> urlList = kw.keySet();
+            for (String t : urlList) {
+                Document document = getDoc(s);
+                Elements elements = document.select(".blog-title-link");
+                for (Element e : elements) {
+                    String url = e.attr("href");
+                    if (url.contains("oschins")) {
+                        kw.put(e.attr("href"), e.text());
+                    }
+
+                }
+            }
+            result.put(navUrl.get(s), kw);
+        }
+        return result;
+    }
+
+
+    /**
+     * 获取导航
+     *
+     * @param document
+     * @return
+     */
+    private Map<String, String> getNav(Document document) {
+        Map<String, String> result = Maps.newHashMap();
+        Elements elements = document.select(".blog-nav a");
+        for (Element e : elements) {
+            String url = e.attr("href");
+            if (url.contains("classification")) {
+                result.put(url, e.text());
+            }
+        }
+        return result;
+    }
+
+    private Document getDoc(String url) {
+        try {
+            return Jsoup.connect(url).header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:33.0) Gecko/20100101 Firefox/33.0").get();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

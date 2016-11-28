@@ -24,6 +24,8 @@ public class News implements Serializable {
 
     private String type;
 
+    private String froms;
+
     private Element contentElement = null;
 
     public String getUrl() {
@@ -102,6 +104,14 @@ public class News implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getFroms() {
+        return froms;
+    }
+
+    public void setFroms(String froms) {
+        this.froms = froms;
     }
 
     @Override

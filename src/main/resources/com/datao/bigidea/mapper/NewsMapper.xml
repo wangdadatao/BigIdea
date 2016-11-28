@@ -13,6 +13,7 @@
             <if test="contentEle != null and contentEle != ''">contentEle,</if>
             <if test="createTime != null and createTime != ''">createTime,</if>
             <if test="type != null and type != ''">`type`,</if>
+            <if test="froms != null and froms != ''">`froms`</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="url != null and url != ''">#{url},</if>
@@ -22,6 +23,7 @@
             <if test="contentEle != null and contentEle != ''">#{contentEle},</if>
             <if test="createTime != null and createTime != ''">#{createTime},</if>
             <if test="type != null and type != ''">#{type}</if>
+            <if test="froms != null and froms != ''">#{froms}</if>
         </trim>
     </insert>
 
