@@ -23,4 +23,21 @@ public interface NoteService {
      * @return
      */
     Note queryByID(Integer id);
+
+    /**
+     * 根据类别查询文章
+     *
+     * @param type
+     * @param pageNum
+     *@param pageSize @return
+     */
+    List<Note> queryByType(String type, Integer pageNum, Integer pageSize);
+
+    /**
+     * 查询文章列表
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    List<Note> queryNoteList(Integer pageNum, Integer pageSize);
 }

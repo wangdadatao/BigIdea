@@ -25,4 +25,18 @@ public interface NoteMapper {
     Note queryByID(Integer id);
 
 
+    /**
+     * 根据类别查询文章
+     *
+     * @param type
+     * @return
+     */
+    List<Note> queryByType(String type);
+
+    /**
+     * 查询文章列表
+     *
+     * @return
+     */
+    List<Note> queryNoteList();
 }

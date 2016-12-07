@@ -3,6 +3,7 @@ package com.datao.bigidea.serviceImpl;
 import com.datao.bigidea.entity.Note;
 import com.datao.bigidea.mapper.NoteMapper;
 import com.datao.bigidea.serviceImpl.service.NoteService;
+import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,7 +26,7 @@ public class NoteServiceImpl extends BaseService implements NoteService {
      */
     @Override
     public List<String> queryTypes() {
-       return noteMapper.queryTypes();
+        return noteMapper.queryTypes();
     }
 
     /**
@@ -37,5 +38,37 @@ public class NoteServiceImpl extends BaseService implements NoteService {
     @Override
     public Note queryByID(Integer id) {
         return noteMapper.queryByID(id);
+    }
+
+    /**
+     * @param type     类别
+     * @param pageNum  页码
+     * @param pageSize 每页数量
+     * @return
+     */
+    @Override
+    public List<Note> queryByType(String type, Integer pageNum, Integer pageSize) {
+        captchaParams(type);
+        pageNum = getPageNum(pageNum);
+        pageSize = getPageSize(pageSize);
+
+        PageHelper.startPage(pageNum, pageSize);
+        return noteMapper.queryByType(type);
+    }
+
+    /**
+     * 查询文章列表
+     *
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public List<Note> queryNoteList(Integer pageNum, Integer pageSize) {
+        pageNum = getPageNum(pageNum);
+        pageSize = getPageSize(pageSize);
+
+        PageHelper.startPage(pageNum, pageSize);
+        return noteMapper.queryNoteList();
     }
 }

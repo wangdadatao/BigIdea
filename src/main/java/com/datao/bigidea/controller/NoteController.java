@@ -25,6 +25,11 @@ public class NoteController {
     @Resource
     private NoteService noteService;
 
+    /**
+     * 查询文章分类
+     *
+     * @return
+     */
     @RequestMapping("/write/queryTypes")
     @ResponseBody
     public ResEnv<List<String>> queryTypes() {
@@ -38,6 +43,12 @@ public class NoteController {
         }
     }
 
+    /**
+     * 根据ID查询文章
+     *
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/queryByID/{id:^\\d+$}")
     @ResponseBody
     public ResEnv<Note> queryByID(@PathVariable Integer id) {
@@ -51,5 +62,47 @@ public class NoteController {
             return ResEnv.fail(e);
         }
 
+    }
+
+    /**
+     * 根据type查询文章
+     *
+     * @param type
+     * @return
+     */
+    @RequestMapping(value = "/queryByType")
+    @ResponseBody
+    public ResEnv<List<Note>> queryByType(String type, Integer pageNum, Integer pageSize) {
+
+        try {
+            List<Note> result = noteService.queryByType(type, pageNum, pageSize);
+            return ResEnv.success(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("根据type查询文章时失败! queryByType" + e);
+            return ResEnv.fail(e);
+        }
+
+    }
+
+
+    /**
+     * 查询文章列表
+     *
+     * @param pageNum  页码
+     * @param pageSize 每页数量
+     * @return
+     */
+    @RequestMapping(value = "/queryNoteList")
+    @ResponseBody
+    public ResEnv<List<Note>> queryNoteList(Integer pageNum, Integer pageSize) {
+        try {
+            List<Note> result = noteService.queryNoteList(pageNum, pageSize);
+            return ResEnv.success(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("查询文章列表时出错! ");
+            return ResEnv.fail(e);
+        }
     }
 }
