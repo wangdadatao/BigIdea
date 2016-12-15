@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.datao.bigidea.mapper.NoteMapper">
 
+    <cache flushInterval="300000"/>
+
     <!--查询博客分类列表-->
     <select id="queryTypes" resultType="java.lang.String">
         SELECT `type` from spider_blog GROUP BY `type`
@@ -14,12 +16,21 @@
 
     <!--根据Type类型查询文章-->
     <select id="queryByType" resultType="com.datao.bigidea.entity.Note">
-        SELECT * FROM spider_blog WHERE type = #{type}
+        SELECT id, title, createTime, type FROM spider_blog WHERE type = #{type}
     </select>
 
     <!--查询文章列表-->
     <select id="queryNoteList" resultType="com.datao.bigidea.entity.Note">
-        SELECT * FROM spider_blog ORDER BY createTime DESC
+        SELECT
+        	id,
+        	title,
+        	createTime,
+        	LEFT(content,100) content,
+        	type
+        FROM
+        	spider_blog
+        ORDER BY
+        	createTime DESC
     </select>
 
 </mapper>
