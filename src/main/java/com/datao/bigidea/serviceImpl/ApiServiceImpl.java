@@ -6,7 +6,11 @@ import com.datao.bigidea.utils.contentextractor.ContentExtractor;
 import com.datao.bigidea.entity.News;
 import com.datao.bigidea.serviceImpl.service.ApiService;
 import com.google.common.collect.Maps;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
+import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +21,8 @@ import java.util.regex.Pattern;
 
 @Service
 public class ApiServiceImpl extends BaseService implements ApiService {
+
+
 
     /**
      * 根据URL获取网页正文
@@ -35,6 +41,30 @@ public class ApiServiceImpl extends BaseService implements ApiService {
         result.put("contentElement", news.getContentElement().toString());
         result.put("time", news.getTime());
         result.put("title", news.getTitle());
+        return result;
+    }
+
+    /**
+     * 提取HTML中的文本
+     *
+     * @param html
+     * @return
+     */
+    @Override
+    public Map<String, String> getHTMLElement(String html) {
+        captchaParams(html);
+        Map<String, String> result = Maps.newHashMap();
+
+        try {
+            String text = ContentExtractor.getTextByHtml(html);
+            result.put("status", "true");
+            result.put("content", text);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("status", "false");
+            result.put("msg", "提取文本失败，请检查HTML格式是否正确！");
+        }
+
         return result;
     }
 
@@ -98,4 +128,6 @@ public class ApiServiceImpl extends BaseService implements ApiService {
         return result;
 
     }
+
+
 }

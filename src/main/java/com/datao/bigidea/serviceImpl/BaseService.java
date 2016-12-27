@@ -1,6 +1,7 @@
 package com.datao.bigidea.serviceImpl;
 
 import com.datao.bigidea.exception.ParamsException;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.util.ObjectUtils;
 
@@ -46,6 +47,16 @@ public class BaseService {
             return 20;
         }
         return pageSize;
+    }
+
+    public String captchaUrl(String url) {
+        String regex = "^(?:https?://)?[\\w]{1,}(?:\\.?[\\w]{1,})+[\\w-_/?&=#%:]*$";
+        if (StringUtils.isEmpty(url)) {
+            throw new ParamsException("请传入参数！");
+        } else if (!url.matches(regex)) {
+            throw new ParamsException("请传入正确格式的参数！");
+        }
+        return url;
     }
 
 }

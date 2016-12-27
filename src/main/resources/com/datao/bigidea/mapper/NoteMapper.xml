@@ -16,7 +16,7 @@
 
     <!--根据Type类型查询文章-->
     <select id="queryByType" resultType="com.datao.bigidea.entity.Note">
-        SELECT id, title, createTime, type FROM spider_blog WHERE type = #{type}
+        SELECT id, title, createTime, LEFT(content,100) content, type FROM spider_blog WHERE type = #{type}
     </select>
 
     <!--查询文章列表-->

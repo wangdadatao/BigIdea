@@ -1,5 +1,6 @@
 package com.datao.bigidea.controller;
 
+import com.datao.bigidea.entity.News;
 import com.datao.bigidea.serviceImpl.service.ApiService;
 import com.datao.bigidea.utils.ResEnv;
 import org.slf4j.Logger;
@@ -23,6 +24,8 @@ public class ApiController {
     @Resource
     private ApiService apiService;
 
+ 
+
     /**
      * 根据URL提取网页正文
      *
@@ -34,6 +37,25 @@ public class ApiController {
     public ResEnv<Map<String, String>> getUrlElement(String url) {
         try {
             Map<String, String> result = apiService.getUrlElement(url);
+            return ResEnv.success(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("根据URL提取网页正文时失败!" + e);
+            return ResEnv.fail(e);
+        }
+    }
+
+    /**
+     * 提取HTML中的正文
+     *
+     * @param html html
+     * @return
+     */
+    @RequestMapping("/url/getHTMLElement")
+    @ResponseBody
+    public ResEnv<Map<String, String>> getHTMLElement(String html) {
+        try {
+            Map<String, String> result = apiService.getHTMLElement(html);
             return ResEnv.success(result);
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,5 +1,7 @@
 package com.datao.bigidea.serviceImpl.service;
 
+import com.datao.bigidea.entity.News;
+
 import java.util.List;
 import java.util.Map;
 
@@ -15,9 +17,17 @@ public interface ApiService {
     Map<String, String> getUrlElement(String url) throws Exception;
 
     /**
+     * 提取HTML中的文字
+     *
+     * @param html
+     * @return
+     */
+    Map<String, String> getHTMLElement(String html);
+
+    /**
      * 提取文本中的数字
      *
-     * @param content     文本内容
+     * @param content 文本内容
      * @param minSize 提取规则:数字的最小长度
      * @param maxSize 提取规则:数字的最大长度
      * @return 结果
@@ -31,5 +41,7 @@ public interface ApiService {
      * @param text2 文本2
      * @return
      */
-    Map<String,String> getSimilarity(String text1, String text2);
+    Map<String, String> getSimilarity(String text1, String text2);
+
+
 }

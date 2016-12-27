@@ -305,7 +305,7 @@ public class ContentExtractor {
         Elements titles = doc.body().select("*[id^=title],*[id$=title],*[class^=title],*[class$=title]");
         if (titles.size() > 0) {
             String title = titles.first().text();
-            if (title.length() > 5 && title.length()<40) {
+            if (title.length() > 5 && title.length() < 40) {
                 return titles.first().text();
             }
         }
@@ -484,6 +484,13 @@ public class ContentExtractor {
         HttpRequest request = new HttpRequest(url);
         String html = request.getResponse().getHtmlByCharsetDetect();
         return getNewsByHtml(html, url);
+    }
+
+    /*根据HTML提取其中文本*/
+    public static String getTextByHtml(String html) {
+        Document coc = Jsoup.parse("<body id='insertBody'>" + html + "</body>");
+        Element element = coc.getElementById("insertBody");
+        return element.text();
     }
 
     public static void main(String[] args) throws Exception {
