@@ -33,5 +33,9 @@
 
     <context:annotation-config />
 
+    <!--定时 开启这个配置，spring才能识别@Scheduled注解 -->
+    <task:executor id="executor" pool-size="5"/>
+    <task:scheduler id="scheduler" pool-size="5"/>
+    <task:annotation-driven executor="executor" scheduler="scheduler"/>
 
 </beans>

@@ -5,8 +5,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
+@RequestMapping("/")
 public class HomeController {
 
+    @RequestMapping("")
+    public String index() {
+        return "build/index.jsp";
+    }
 
 
 }
