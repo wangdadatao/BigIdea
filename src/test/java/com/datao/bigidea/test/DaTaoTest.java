@@ -3,6 +3,7 @@ package com.datao.bigidea.test;
 import com.datao.bigidea.entity.News;
 import com.datao.bigidea.mapper.NewsMapper;
 import com.datao.bigidea.serviceImpl.BaseService;
+import com.datao.bigidea.utils.HttpUtil;
 import com.datao.bigidea.utils.contentextractor.ContentExtractor;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.ObjectUtils;
@@ -197,6 +198,39 @@ public class DaTaoTest extends BaseService {
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Test
+    public void getMovieInfo() {
+       // final String url = "http://120.27.223.208:8080/eis-service/company/queryCompanyByParam";
+        final String url = "http://115.159.226.58:8080/note/queryNoteList";
+        for (int i = 1; i <= 10; i++) {
+            final int finalI = i;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    testApi(url, finalI);
+                }
+            }).start();
+
+        }
+
+        try {
+            Thread.sleep(3600000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void testApi(String url, Integer num) {
+
+        for (int i = 0; i <= 10000; i++) {
+            try {
+                String str = Jsoup.connect(url).ignoreContentType(true).timeout(3000).get().text();
+                System.out.println(num + "  ---  " + str.length() + "  --  " + i);
+            } catch (IOException ignored) {
+            }
         }
     }
 }

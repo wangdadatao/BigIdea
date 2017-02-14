@@ -4,9 +4,12 @@ import com.datao.bigidea.entity.WordsTFIDF;
 import com.datao.bigidea.mapper.NewsMapper;
 import com.datao.bigidea.serviceImpl.SpiderServiceImpl;
 import com.datao.bigidea.serviceImpl.service.SpiderService;
+import com.datao.bigidea.utils.HttpUtil;
+import org.junit.Test;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -91,5 +94,8 @@ public class MyThread extends Thread {
         }
         spiderService.insertWords(words);
     }
+
+
+
 
 }

@@ -126,7 +126,7 @@ public class HttpUtil {
      * @throws IOException 网络异常
      */
     public static Document getDocument(String url, Boolean bool) throws IOException {
-        System.out.println(url);
+
 
         final String ProxyUser = "H76I1B601078978D";
         final String ProxyPass = "68CD0F65620F0D3F";
