@@ -89,15 +89,16 @@ public class NoteController {
     /**
      * 查询文章列表
      *
+     * @param keyWords 关键词
      * @param pageNum  页码
      * @param pageSize 每页数量
      * @return
      */
     @RequestMapping(value = "/queryNoteList")
     @ResponseBody
-    public ResEnv<List<Note>> queryNoteList(Integer pageNum, Integer pageSize) {
+    public ResEnv<List<Note>> queryNoteList(String keyWords, Integer pageNum, Integer pageSize) {
         try {
-            List<Note> result = noteService.queryNoteList(pageNum, pageSize);
+            List<Note> result = noteService.queryNoteList(keyWords, pageNum, pageSize);
             return ResEnv.success(result);
         } catch (Exception e) {
             e.printStackTrace();

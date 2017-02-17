@@ -29,6 +29,9 @@
         	type
         FROM
         	spider_blog
+        <if test="keyWords != null and keyWords !=''">
+          WHERE  title like "%"#{keyWords}"%"
+        </if>
         ORDER BY
         	createTime DESC
     </select>

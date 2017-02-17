@@ -35,9 +35,11 @@ public interface NoteService {
 
     /**
      * 查询文章列表
+     *
+     * @param keyWords
      * @param pageNum
      * @param pageSize
      * @return
      */
-    List<Note> queryNoteList(Integer pageNum, Integer pageSize);
+    List<Note> queryNoteList(String keyWords, Integer pageNum, Integer pageSize);
 }

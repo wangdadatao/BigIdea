@@ -59,16 +59,17 @@ public class NoteServiceImpl extends BaseService implements NoteService {
     /**
      * 查询文章列表
      *
-     * @param pageNum
-     * @param pageSize
+     * @param keyWords 关键词搜索
+     * @param pageNum 页码
+     * @param pageSize 每页数量
      * @return
      */
     @Override
-    public List<Note> queryNoteList(Integer pageNum, Integer pageSize) {
+    public List<Note> queryNoteList(String keyWords, Integer pageNum, Integer pageSize) {
         pageNum = getPageNum(pageNum);
         pageSize = getPageSize(pageSize);
 
         PageHelper.startPage(pageNum, pageSize);
-        return noteMapper.queryNoteList();
+        return noteMapper.queryNoteList(keyWords);
     }
 }

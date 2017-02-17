@@ -46,6 +46,9 @@ public class BaseService {
         if (pageSize == null || pageSize == 0) {
             return 20;
         }
+        if(pageSize > 30){
+            pageSize = 30;
+        }
         return pageSize;
     }
 

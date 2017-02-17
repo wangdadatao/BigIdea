@@ -1,6 +1,7 @@
 package com.datao.bigidea.mapper;
 
 import com.datao.bigidea.entity.Note;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -36,7 +37,8 @@ public interface NoteMapper {
     /**
      * 查询文章列表
      *
+     * @param keyWords 搜索关键词
      * @return
      */
-    List<Note> queryNoteList();
+    List<Note> queryNoteList(@Param("keyWords") String keyWords);
 }
