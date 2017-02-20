@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by 王 海涛 on 2016/11/25.
@@ -32,9 +33,9 @@ public class NoteController {
      */
     @RequestMapping("/write/queryTypes")
     @ResponseBody
-    public ResEnv<List<String>> queryTypes() {
+    public ResEnv<List<Map<String,String>>> queryTypes() {
         try {
-            List<String> result = noteService.queryTypes();
+            List<Map<String,String>> result = noteService.queryTypes();
             return ResEnv.success(result);
         } catch (Exception e) {
             e.printStackTrace();

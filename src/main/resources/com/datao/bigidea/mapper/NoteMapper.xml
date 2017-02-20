@@ -5,8 +5,8 @@
     <cache flushInterval="300000"/>
 
     <!--查询博客分类列表-->
-    <select id="queryTypes" resultType="java.lang.String">
-        SELECT `type` from spider_blog GROUP BY `type`
+    <select id="queryTypes" resultType="java.util.HashMap">
+        SELECT `type`, count(1) num from spider_blog GROUP BY `type`
     </select>
 
     <!--根据ID查询博客-->

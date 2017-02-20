@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by 王 海涛 on 2016/11/25.
@@ -25,7 +26,7 @@ public class NoteServiceImpl extends BaseService implements NoteService {
      * @return
      */
     @Override
-    public List<String> queryTypes() {
+    public List<Map<String,String>>queryTypes() {
         return noteMapper.queryTypes();
     }
 

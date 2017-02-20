@@ -4,6 +4,7 @@ import com.datao.bigidea.entity.Note;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by 王 海涛 on 2016/11/25.
@@ -15,7 +16,7 @@ public interface NoteMapper {
      *
      * @return
      */
-    List<String> queryTypes();
+    List<Map<String,String>> queryTypes();
 
     /**
      * 根据ID查询博客
