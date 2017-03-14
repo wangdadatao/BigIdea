@@ -50,9 +50,9 @@ public class NoteController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/queryByID/{id:^\\d+$}")
+    @RequestMapping(value = "/queryByID")
     @ResponseBody
-    public ResEnv<Note> queryByID(@PathVariable Integer id) {
+    public ResEnv<Note> queryByID(Integer id) {
 
         try {
             Note result = noteService.queryByID(id);

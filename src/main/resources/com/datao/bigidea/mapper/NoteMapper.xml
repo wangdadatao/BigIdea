@@ -22,18 +22,18 @@
     <!--查询文章列表-->
     <select id="queryNoteList" resultType="com.datao.bigidea.entity.Note">
         SELECT
-        	id,
-        	title,
-        	createTime,
-        	LEFT(content,100) content,
-        	type
+        id,
+        title,
+        createTime,
+        LEFT(content,100) content,
+        type
         FROM
-        	spider_blog
+        spider_blog
         <if test="keyWords != null and keyWords !=''">
-          WHERE  title like "%"#{keyWords}"%"
+            WHERE  title like "%"#{keyWords}"%"
         </if>
         ORDER BY
-        	createTime DESC
+        createTime DESC
     </select>
 
 </mapper>
