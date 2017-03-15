@@ -1,7 +1,9 @@
 package com.datao.bigidea.serviceImpl;
 
 import com.datao.bigidea.exception.ParamsException;
+import com.datao.bigidea.utils.ConfigProp;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.util.ObjectUtils;
 
@@ -39,15 +41,18 @@ public class BaseService {
     /**
      * 验证页码
      *
-     * @param pageSize
-     * @return
+     * @param pageSize  每页数量
+     * @return  每页数量
      */
     public Integer getPageSize(Integer pageSize) {
         if (pageSize == null || pageSize == 0) {
             return 20;
         }
-        if(pageSize > 30){
-            pageSize = 30;
+
+        Integer maxPageSize = Integer.valueOf(ConfigProp.get("MAXPAGESIZE"));
+
+        if(pageSize > maxPageSize){
+            pageSize = maxPageSize;
         }
         return pageSize;
     }
@@ -62,4 +67,12 @@ public class BaseService {
         return url;
     }
 
+    /**
+     * 得到当前时间
+     *
+     * @return 时间
+     */
+    public String getNowTime(){
+        return new DateTime().toString("yyyy-MM-dd HH:mm:ss");
+    }
 }

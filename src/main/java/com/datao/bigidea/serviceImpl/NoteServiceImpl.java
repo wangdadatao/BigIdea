@@ -3,7 +3,10 @@ package com.datao.bigidea.serviceImpl;
 import com.datao.bigidea.entity.Note;
 import com.datao.bigidea.mapper.NoteMapper;
 import com.datao.bigidea.serviceImpl.service.NoteService;
+import com.datao.bigidea.system.CtxUtils;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Maps;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -12,6 +15,8 @@ import java.util.Map;
 
 /**
  * Created by 王 海涛 on 2016/11/25.
+ *
+ * 笔记service
  */
 @Service
 public class NoteServiceImpl extends BaseService implements NoteService {
@@ -72,5 +77,29 @@ public class NoteServiceImpl extends BaseService implements NoteService {
 
         PageHelper.startPage(pageNum, pageSize);
         return noteMapper.queryNoteList(keyWords);
+    }
+
+    /**
+     * 添加笔记
+     * @param note 笔记对象
+     * @return  添加结果
+     */
+    @Override
+    public Map<String, String> addNote(Note note) {
+        captchaParams(note);
+
+        captchaParams(note.getTitle());
+        note.setCreateTime(getNowTime());
+        note.setCreateIP(CtxUtils.getIpAddress());
+        if (note.getType() == null){
+            note.setType("暂无分类");
+        }
+        note.setStatus(1);
+
+        noteMapper.insertNote(note);
+        Map<String,String> result = Maps.newHashMap();
+        result.put("status","true");
+        result.put("msg","添加成功!");
+        return result;
     }
 }

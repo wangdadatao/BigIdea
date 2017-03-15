@@ -23,11 +23,17 @@ public class Note implements Serializable {
 
     private String content;
 
+    private String contentNoElement;
+
     private String lastChangeTime;
 
     private String lastChangeIP;
 
     private Integer status;
+
+    private Integer clickNum;
+
+    private Integer replyNum;
 
     public Integer getId() {
         return id;
@@ -85,6 +91,14 @@ public class Note implements Serializable {
         this.content = content;
     }
 
+    public String getContentNoElement() {
+        return contentNoElement;
+    }
+
+    public void setContentNoElement(String contentNoElement) {
+        this.contentNoElement = contentNoElement;
+    }
+
     public String getLastChangeTime() {
         return lastChangeTime;
     }
@@ -107,5 +121,21 @@ public class Note implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getClickNum() {
+        return clickNum;
+    }
+
+    public void setClickNum(Integer clickNum) {
+        this.clickNum = clickNum;
+    }
+
+    public Integer getReplyNum() {
+        return replyNum;
+    }
+
+    public void setReplyNum(Integer replyNum) {
+        this.replyNum = replyNum;
     }
 }

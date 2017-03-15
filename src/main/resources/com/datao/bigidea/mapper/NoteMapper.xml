@@ -6,34 +6,54 @@
 
     <!--查询博客分类列表-->
     <select id="queryTypes" resultType="java.util.HashMap">
-        SELECT `type`, count(1) num from spider_blog GROUP BY `type`
+        SELECT count(1) num, `type` FROM b_note GROUP BY `type`
     </select>
 
     <!--根据ID查询博客-->
     <select id="queryByID" resultType="com.datao.bigidea.entity.Note">
-        SELECT * FROM spider_blog where id = #{id}
+        SELECT * FROM b_note where id = #{id}
     </select>
 
     <!--根据Type类型查询文章-->
     <select id="queryByType" resultType="com.datao.bigidea.entity.Note">
-        SELECT id, title, createTime, LEFT(content,100) content, type FROM spider_blog WHERE type = #{type}
+        SELECT * FROM b_note WHERE `type` = #{type}
     </select>
 
     <!--查询文章列表-->
     <select id="queryNoteList" resultType="com.datao.bigidea.entity.Note">
         SELECT
-        id,
-        title,
-        createTime,
-        LEFT(content,100) content,
-        type
+        *
         FROM
-        spider_blog
-        <if test="keyWords != null and keyWords !=''">
-            WHERE  title like "%"#{keyWords}"%"
-        </if>
+        b_note
         ORDER BY
+        <if test="keyWords != null and keyWords !=''">
+        WHERE  title like "%"#{keyWords}"%"
+        </if>
         createTime DESC
     </select>
+
+    <!--添加笔记-->
+    <insert id="insertNote" useGeneratedKeys="true" parameterType="com.datao.bigidea.entity.Note">
+        INSERT INTO b_note
+        <include refid="setSQL"/>
+    </insert>
+
+    <sql id="setSQL">
+        <set>
+            <if test="userId != null">userId = #{userId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+            <if test="createIP != null">createIP = #{createIP},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="contentNoElement != null">contentNoElement = #{contentNoElement},</if>
+            <if test="lastChangeTime != null">lastChangeTime = #{lastChangeTime},</if>
+            <if test="lastChangeIP != null">lastChangeIP = #{lastChangeIP},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="clickNum != null">clickNum = #{clickNum},</if>
+            <if test="replyNum != null">replyNum = #{replyNum}</if>
+        </set>
+
+    </sql>
 
 </mapper>

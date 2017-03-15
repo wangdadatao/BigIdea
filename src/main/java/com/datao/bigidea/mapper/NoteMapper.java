@@ -42,4 +42,10 @@ public interface NoteMapper {
      * @return
      */
     List<Note> queryNoteList(@Param("keyWords") String keyWords);
+
+    /**
+     * 添加note
+     * @param note
+     */
+    int insertNote(Note note);
 }

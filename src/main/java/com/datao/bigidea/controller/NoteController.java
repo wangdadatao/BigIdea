@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
@@ -31,7 +32,7 @@ public class NoteController {
      *
      * @return
      */
-    @RequestMapping("/write/queryTypes")
+    @RequestMapping("/queryTypes")
     @ResponseBody
     public ResEnv<List<Map<String,String>>> queryTypes() {
         try {
@@ -107,4 +108,26 @@ public class NoteController {
             return ResEnv.fail(e);
         }
     }
+
+
+    /**
+     * 添加笔记
+     *
+     * @param note 文章对象
+     * @return
+     */
+    @RequestMapping(value = "/addNote",method = RequestMethod.POST)
+    @ResponseBody
+    public ResEnv<Map<String,String>> addNote(Note note) {
+        try {
+            Map<String,String> result = noteService.addNote(note);
+            return ResEnv.success(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("添加笔记时出错! addNote" + e);
+            return ResEnv.fail(e);
+        }
+    }
+
+
 }

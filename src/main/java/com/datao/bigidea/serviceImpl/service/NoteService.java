@@ -43,4 +43,12 @@ public interface NoteService {
      * @return
      */
     List<Note> queryNoteList(String keyWords, Integer pageNum, Integer pageSize);
+
+    /**
+     * 添加笔记
+     *
+     * @param note 笔记对象
+     * @return  添加结果
+     */
+    Map<String,String> addNote(Note note);
 }
