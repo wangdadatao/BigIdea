@@ -47,5 +47,5 @@ public interface NoteMapper {
      * 添加note
      * @param note
      */
-    int insertNote(Note note);
+    void insertNote(Note note);
 }

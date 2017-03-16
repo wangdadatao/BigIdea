@@ -1,6 +1,9 @@
 package com.datao.bigidea.exception;
 
 public class AuthException extends RuntimeException {
+
+    private static final long serialVersionUID = -1058946876950167060L;
+
     public AuthException() {
         super();
     }

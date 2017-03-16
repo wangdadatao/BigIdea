@@ -15,7 +15,7 @@ import java.util.Map;
 
 /**
  * Created by 王 海涛 on 2016/11/25.
- *
+ * <p>
  * 笔记service
  */
 @Service
@@ -31,7 +31,7 @@ public class NoteServiceImpl extends BaseService implements NoteService {
      * @return
      */
     @Override
-    public List<Map<String,String>>queryTypes() {
+    public List<Map<String, String>> queryTypes() {
         return noteMapper.queryTypes();
     }
 
@@ -66,7 +66,7 @@ public class NoteServiceImpl extends BaseService implements NoteService {
      * 查询文章列表
      *
      * @param keyWords 关键词搜索
-     * @param pageNum 页码
+     * @param pageNum  页码
      * @param pageSize 每页数量
      * @return
      */
@@ -81,8 +81,9 @@ public class NoteServiceImpl extends BaseService implements NoteService {
 
     /**
      * 添加笔记
+     *
      * @param note 笔记对象
-     * @return  添加结果
+     * @return 添加结果
      */
     @Override
     public Map<String, String> addNote(Note note) {
@@ -91,15 +92,16 @@ public class NoteServiceImpl extends BaseService implements NoteService {
         captchaParams(note.getTitle());
         note.setCreateTime(getNowTime());
         note.setCreateIP(CtxUtils.getIpAddress());
-        if (note.getType() == null){
+        if (note.getType() == null) {
             note.setType("暂无分类");
         }
         note.setStatus(1);
 
         noteMapper.insertNote(note);
-        Map<String,String> result = Maps.newHashMap();
-        result.put("status","true");
-        result.put("msg","添加成功!");
+        Map<String, String> result = Maps.newHashMap();
+        result.put("status", "true");
+        result.put("msg", "添加成功!");
+        result.put("id", String.valueOf(note.getId()));
         return result;
     }
 }

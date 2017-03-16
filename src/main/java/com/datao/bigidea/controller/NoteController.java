@@ -118,6 +118,7 @@ public class NoteController {
      */
     @RequestMapping(value = "/addNote",method = RequestMethod.POST)
     @ResponseBody
+
     public ResEnv<Map<String,String>> addNote(Note note) {
         try {
             Map<String,String> result = noteService.addNote(note);

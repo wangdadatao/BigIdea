@@ -33,7 +33,7 @@
     </select>
 
     <!--添加笔记-->
-    <insert id="insertNote" useGeneratedKeys="true" parameterType="com.datao.bigidea.entity.Note">
+    <insert id="insertNote" useGeneratedKeys="true"  keyProperty="id" parameterType="com.datao.bigidea.entity.Note">
         INSERT INTO b_note
         <include refid="setSQL"/>
     </insert>

@@ -31,7 +31,7 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <!--跨域过滤器-->
+<!--    &lt;!&ndash;跨域过滤器&ndash;&gt;
     <filter>
         <filter-name>cors</filter-name>
         <filter-class>com.datao.bigidea.filter.SimpleCORSFilter</filter-class>
@@ -39,7 +39,7 @@
     <filter-mapping>
         <filter-name>cors</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping>-->
 
     <!--shiro-->
     <filter>

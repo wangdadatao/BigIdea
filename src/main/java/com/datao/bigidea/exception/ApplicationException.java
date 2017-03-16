@@ -1,6 +1,7 @@
 package com.datao.bigidea.exception;
 
 public class ApplicationException extends RuntimeException {
+
     private static final long serialVersionUID = 7177549176140059612L;
 
     public ApplicationException() {

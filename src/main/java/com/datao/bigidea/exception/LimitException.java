@@ -1,9 +1,10 @@
 package com.datao.bigidea.exception;
 
-/**
- * Created by 海涛 on 2016/8/8.
- */
+
 public class LimitException extends RuntimeException {
+
+    private static final long serialVersionUID = -8450456478891449604L;
+
     public LimitException() {
         super();
     }
