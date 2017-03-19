@@ -15,7 +15,7 @@ public interface NoteService {
      *
      * @return
      */
-    List<Map<String,String>> queryTypes();
+    List<Map<String, String>> queryTypes();
 
     /**
      * 根据ID查询博客
@@ -30,7 +30,7 @@ public interface NoteService {
      *
      * @param type
      * @param pageNum
-     *@param pageSize @return
+     * @param pageSize @return
      */
     List<Note> queryByType(String type, Integer pageNum, Integer pageSize);
 
@@ -48,7 +48,15 @@ public interface NoteService {
      * 添加笔记
      *
      * @param note 笔记对象
-     * @return  添加结果
+     * @return 添加结果
      */
-    Map<String,String> addNote(Note note);
+    Map<String, String> addNote(Note note);
+
+    /**
+     * 跟新笔记内容
+     *
+     * @param note 笔记对象
+     * @return 更新结果
+     */
+    Map<String, String> updateNote(Note note);
 }

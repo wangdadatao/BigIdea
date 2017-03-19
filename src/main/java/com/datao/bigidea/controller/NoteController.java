@@ -34,9 +34,9 @@ public class NoteController {
      */
     @RequestMapping("/queryTypes")
     @ResponseBody
-    public ResEnv<List<Map<String,String>>> queryTypes() {
+    public ResEnv<List<Map<String, String>>> queryTypes() {
         try {
-            List<Map<String,String>> result = noteService.queryTypes();
+            List<Map<String, String>> result = noteService.queryTypes();
             return ResEnv.success(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -116,12 +116,11 @@ public class NoteController {
      * @param note 文章对象
      * @return
      */
-    @RequestMapping(value = "/addNote",method = RequestMethod.POST)
+    @RequestMapping(value = "/addNote", method = RequestMethod.POST)
     @ResponseBody
-
-    public ResEnv<Map<String,String>> addNote(Note note) {
+    public ResEnv<Map<String, String>> addNote(Note note) {
         try {
-            Map<String,String> result = noteService.addNote(note);
+            Map<String, String> result = noteService.addNote(note);
             return ResEnv.success(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,5 +129,23 @@ public class NoteController {
         }
     }
 
+    /**
+     * 更新笔记
+     *
+     * @param note 笔记对象
+     * @return 更新结果
+     */
+    @RequestMapping("updateNote")
+    @ResponseBody
+    public ResEnv<Map<String, String>> updateNote(Note note) {
+        try {
+            Map<String, String> result = noteService.updateNote(note);
+            return ResEnv.success(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error("跟新笔记时出错！" + e);
+            return ResEnv.fail(e);
+        }
+    }
 
 }

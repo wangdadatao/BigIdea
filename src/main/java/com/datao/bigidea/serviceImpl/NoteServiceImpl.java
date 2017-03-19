@@ -43,7 +43,12 @@ public class NoteServiceImpl extends BaseService implements NoteService {
      */
     @Override
     public Note queryByID(Integer id) {
-        return noteMapper.queryByID(id);
+        Note note = noteMapper.queryByID(id);
+
+        note.setClickNum(note.getClickNum() + 1);
+        noteMapper.updateNote(note);
+
+        return note;
     }
 
     /**
@@ -96,12 +101,35 @@ public class NoteServiceImpl extends BaseService implements NoteService {
             note.setType("暂无分类");
         }
         note.setStatus(1);
+        note.setClickNum(0);
+        note.setReplyNum(0);
 
         noteMapper.insertNote(note);
         Map<String, String> result = Maps.newHashMap();
         result.put("status", "true");
         result.put("msg", "添加成功!");
         result.put("id", String.valueOf(note.getId()));
+        return result;
+    }
+
+    /**
+     * 跟新笔记内容
+     *
+     * @param note 笔记对象
+     * @return 更新结果
+     */
+    @Override
+    public Map<String, String> updateNote(Note note) {
+        captchaParams(note);
+        captchaParams(note.getId(), note.getTitle());
+
+        note.setLastChangeIP(CtxUtils.getIpAddress());
+        note.setLastChangeTime(getNowTime());
+
+        noteMapper.updateNote(note);
+        Map<String, String> result = Maps.newHashMap();
+        result.put("status", "true");
+        result.put("msg", "修改成功");
         return result;
     }
 }

@@ -12,17 +12,17 @@ import java.util.Map;
 public interface NoteMapper {
 
     /**
-     * 查询博客分类
+     * 查询笔记分类
      *
-     * @return
+     * @return 笔记分类
      */
-    List<Map<String,String>> queryTypes();
+    List<Map<String, String>> queryTypes();
 
     /**
-     * 根据ID查询博客
+     * 根据ID查询笔记
      *
-     * @param id
-     * @return
+     * @param id 笔记ID
+     * @return 笔记对象
      */
     Note queryByID(Integer id);
 
@@ -30,8 +30,8 @@ public interface NoteMapper {
     /**
      * 根据类别查询文章
      *
-     * @param type
-     * @return
+     * @param type 查询类型
+     * @return 结果集
      */
     List<Note> queryByType(String type);
 
@@ -39,13 +39,21 @@ public interface NoteMapper {
      * 查询文章列表
      *
      * @param keyWords 搜索关键词
-     * @return
+     * @return 结果集
      */
     List<Note> queryNoteList(@Param("keyWords") String keyWords);
 
     /**
      * 添加note
-     * @param note
+     *
+     * @param note 笔记对象
      */
     void insertNote(Note note);
+
+    /**
+     * 更新笔记内容
+     *
+     * @param note 笔记对象
+     */
+    void updateNote(Note note);
 }

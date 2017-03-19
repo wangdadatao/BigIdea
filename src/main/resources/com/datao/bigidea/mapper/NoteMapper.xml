@@ -27,16 +27,23 @@
         b_note
         ORDER BY
         <if test="keyWords != null and keyWords !=''">
-        WHERE  title like "%"#{keyWords}"%"
+            WHERE title like "%"#{keyWords}"%"
         </if>
         createTime DESC
     </select>
 
     <!--添加笔记-->
-    <insert id="insertNote" useGeneratedKeys="true"  keyProperty="id" parameterType="com.datao.bigidea.entity.Note">
+    <insert id="insertNote" useGeneratedKeys="true" keyProperty="id" parameterType="com.datao.bigidea.entity.Note">
         INSERT INTO b_note
         <include refid="setSQL"/>
     </insert>
+
+    <!--更新笔记内容-->
+    <update id="updateNote" parameterType="com.datao.bigidea.entity.Note">
+        UPDATE b_note
+        <include refid="setSQL"/>
+        WHERE id = #{id}
+    </update>
 
     <sql id="setSQL">
         <set>
@@ -53,7 +60,6 @@
             <if test="clickNum != null">clickNum = #{clickNum},</if>
             <if test="replyNum != null">replyNum = #{replyNum}</if>
         </set>
-
     </sql>
 
 </mapper>
