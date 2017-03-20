@@ -44,7 +44,7 @@
           p:validationQuery="SELECT 'x'"
           p:testWhileIdle="true"/>
 
-    <bean id="multipleDataSource" class="com.datao.bigidea.system.MultipleDataSource">
+    <bean id="multipleDataSource" class="com.datao.bigidea.system.moredatabase.MultipleDataSource">
         <property name="defaultTargetDataSource" ref="dataVSource"/>
         <property name="targetDataSources">
             <map>

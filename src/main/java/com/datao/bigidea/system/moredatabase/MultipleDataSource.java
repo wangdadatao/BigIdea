@@ -1,4 +1,4 @@
-package com.datao.bigidea.system;
+package com.datao.bigidea.system.moredatabase;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 

@@ -2,8 +2,6 @@ package com.datao.bigidea.utils.contentextractor.util;
 
 /**
  * 全局配置
- *
- * @author hu
  */
 public class Config {
 
