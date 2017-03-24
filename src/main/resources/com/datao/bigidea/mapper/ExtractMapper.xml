@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.datao.bigidea.mapper.ExtractMapper">
+
+    <!--插入新的摘录-->
+    <insert id="insertExtract" parameterType="com.datao.bigidea.entity.Extract">
+        INSERT INTO b_excerpt
+        <include refid="setSql"/>
+    </insert>
+
+    <sql id="setSql">
+        <set>
+            <if test="url != null">url = #{url},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="pubTime != null">pubTime = #{pubTime},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="contentNoElement != null">contentNoElement = #{contentNoElement},</if>
+            <if test="type != null">`type` = #{type},</if>
+            <if test="userId != null">userId = #{userId},</if>
+            <if test="urlMD5 != null">urlMD5 = #{urlMD5},</if>
+        </set>
+    </sql>
+
+</mapper>

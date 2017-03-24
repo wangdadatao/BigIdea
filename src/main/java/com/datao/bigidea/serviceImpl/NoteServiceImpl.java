@@ -4,9 +4,13 @@ import com.datao.bigidea.entity.Note;
 import com.datao.bigidea.mapper.NoteMapper;
 import com.datao.bigidea.serviceImpl.service.NoteService;
 import com.datao.bigidea.system.CtxUtils;
+import com.datao.bigidea.utils.contentextractor.ContentExtractor;
 import com.github.pagehelper.PageHelper;
 import com.google.common.collect.Maps;
 import org.joda.time.DateTime;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -103,6 +107,10 @@ public class NoteServiceImpl extends BaseService implements NoteService {
         note.setStatus(1);
         note.setClickNum(0);
         note.setReplyNum(0);
+
+        Document coc = Jsoup.parse("<body id='insertBody'>" + note.getContent() + "</body>");
+        Element element = coc.getElementById("insertBody");
+        note.setContentNoElement(element.text());
 
         noteMapper.insertNote(note);
         Map<String, String> result = Maps.newHashMap();
