@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.datao.bigidea.mapper.NoteMapper">
+<mapper namespace="com.datao.bigidea.mapper.BlogMapper">
 
     <cache flushInterval="300000"/>
 
     <!--查询博客分类列表-->
     <select id="queryTypes" resultType="java.util.HashMap">
-        SELECT count(1) num, `type` FROM b_note GROUP BY `type`
+        SELECT count(1) num, `type` FROM b_blog GROUP BY `type`
     </select>
 
     <!--根据ID查询博客-->
-    <select id="queryByID" resultType="com.datao.bigidea.entity.Note">
-        SELECT * FROM b_note where id = #{id}
+    <select id="queryByID" resultType="com.datao.bigidea.entity.Blog">
+        SELECT * FROM b_blog where id = #{id}
     </select>
 
     <!--根据Type类型查询文章-->
-    <select id="queryByType" resultType="com.datao.bigidea.entity.Note">
-        SELECT * FROM b_note WHERE `type` = #{type}
+    <select id="queryByType" resultType="com.datao.bigidea.entity.Blog">
+        SELECT * FROM b_blog WHERE `type` = #{type}
     </select>
 
     <!--查询文章列表-->
-    <select id="queryNoteList" resultType="com.datao.bigidea.entity.Note">
+    <select id="queryBlogList" resultType="com.datao.bigidea.entity.Blog">
         SELECT
         *
         FROM
-        b_note
+        b_blog
         ORDER BY
         <if test="keyWords != null and keyWords !=''">
             WHERE title like "%"#{keyWords}"%"
@@ -32,15 +32,15 @@
         createTime DESC
     </select>
 
-    <!--添加笔记-->
-    <insert id="insertNote" useGeneratedKeys="true" keyProperty="id" parameterType="com.datao.bigidea.entity.Note">
-        INSERT INTO b_note
+    <!--添加博客-->
+    <insert id="insertBlog" useGeneratedKeys="true" keyProperty="id" parameterType="com.datao.bigidea.entity.Blog">
+        INSERT INTO b_blog
         <include refid="setSQL"/>
     </insert>
 
-    <!--更新笔记内容-->
-    <update id="updateNote" parameterType="com.datao.bigidea.entity.Note">
-        UPDATE b_note
+    <!--更新博客内容-->
+    <update id="updateBlog" parameterType="com.datao.bigidea.entity.Blog">
+        UPDATE b_blog
         <include refid="setSQL"/>
         WHERE id = #{id}
     </update>

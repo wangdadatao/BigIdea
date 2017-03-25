@@ -1,6 +1,6 @@
 package com.datao.bigidea.mapper;
 
-import com.datao.bigidea.entity.Note;
+import com.datao.bigidea.entity.Blog;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -9,22 +9,22 @@ import java.util.Map;
 /**
  * Created by 王 海涛 on 2016/11/25.
  */
-public interface NoteMapper {
+public interface BlogMapper {
 
     /**
-     * 查询笔记分类
+     * 查询博客分类
      *
-     * @return 笔记分类
+     * @return 博客分类
      */
     List<Map<String, String>> queryTypes();
 
     /**
-     * 根据ID查询笔记
+     * 根据ID查询博客
      *
-     * @param id 笔记ID
-     * @return 笔记对象
+     * @param id 博客ID
+     * @return 博客对象
      */
-    Note queryByID(Integer id);
+    Blog queryByID(Integer id);
 
 
     /**
@@ -33,7 +33,7 @@ public interface NoteMapper {
      * @param type 查询类型
      * @return 结果集
      */
-    List<Note> queryByType(String type);
+    List<Blog> queryByType(String type);
 
     /**
      * 查询文章列表
@@ -41,19 +41,19 @@ public interface NoteMapper {
      * @param keyWords 搜索关键词
      * @return 结果集
      */
-    List<Note> queryNoteList(@Param("keyWords") String keyWords);
+    List<Blog> queryBlogList(@Param("keyWords") String keyWords);
 
     /**
-     * 添加note
+     * 添加blog
      *
-     * @param note 笔记对象
+     * @param blog 博客对象
      */
-    void insertNote(Note note);
+    void insertBlog(Blog blog);
 
     /**
-     * 更新笔记内容
+     * 更新博客内容
      *
-     * @param note 笔记对象
+     * @param blog 博客对象
      */
-    void updateNote(Note note);
+    void updateBlog(Blog blog);
 }

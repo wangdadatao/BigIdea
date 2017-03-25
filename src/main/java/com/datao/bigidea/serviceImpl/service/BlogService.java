@@ -1,6 +1,6 @@
 package com.datao.bigidea.serviceImpl.service;
 
-import com.datao.bigidea.entity.Note;
+import com.datao.bigidea.entity.Blog;
 
 import java.util.List;
 import java.util.Map;
@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Created by 王 海涛 on 2016/11/25.
  */
-public interface NoteService {
+public interface BlogService {
 
     /**
      * 查询博客分类
@@ -23,7 +23,7 @@ public interface NoteService {
      * @param id
      * @return
      */
-    Note queryByID(Integer id);
+    Blog queryByID(Integer id);
 
     /**
      * 根据类别查询文章
@@ -32,7 +32,7 @@ public interface NoteService {
      * @param pageNum
      * @param pageSize @return
      */
-    List<Note> queryByType(String type, Integer pageNum, Integer pageSize);
+    List<Blog> queryByType(String type, Integer pageNum, Integer pageSize);
 
     /**
      * 查询文章列表
@@ -42,21 +42,21 @@ public interface NoteService {
      * @param pageSize
      * @return
      */
-    List<Note> queryNoteList(String keyWords, Integer pageNum, Integer pageSize);
+    List<Blog> queryBlogList(String keyWords, Integer pageNum, Integer pageSize);
 
     /**
-     * 添加笔记
+     * 添加博客
      *
-     * @param note 笔记对象
+     * @param blog 博客对象
      * @return 添加结果
      */
-    Map<String, String> addNote(Note note);
+    Map<String, String> addBlog(Blog blog);
 
     /**
-     * 跟新笔记内容
+     * 跟新博客内容
      *
-     * @param note 笔记对象
+     * @param blog 博客对象
      * @return 更新结果
      */
-    Map<String, String> updateNote(Note note);
+    Map<String, String> updateBlog(Blog blog);
 }

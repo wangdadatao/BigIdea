@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by 王 海涛 on 2016/11/25.
  */
-public class Note implements Serializable {
+public class Blog implements Serializable {
 
     private static final long serialVersionUID = 4892307210777122459L;
 

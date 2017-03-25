@@ -1,12 +1,11 @@
 package com.datao.bigidea.controller;
 
-import com.datao.bigidea.entity.Note;
-import com.datao.bigidea.serviceImpl.service.NoteService;
+import com.datao.bigidea.entity.Blog;
+import com.datao.bigidea.serviceImpl.service.BlogService;
 import com.datao.bigidea.utils.ResEnv;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,13 +18,13 @@ import java.util.Map;
  * Created by 王 海涛 on 2016/11/25.
  */
 @Controller
-@RequestMapping("/note")
-public class NoteController {
+@RequestMapping("/blog")
+public class BlogController {
 
-    Logger logger = LoggerFactory.getLogger(NoteController.class);
+    Logger logger = LoggerFactory.getLogger(BlogController.class);
 
     @Resource
-    private NoteService noteService;
+    private BlogService blogService;
 
     /**
      * 查询文章分类
@@ -36,11 +35,11 @@ public class NoteController {
     @ResponseBody
     public ResEnv<List<Map<String, String>>> queryTypes() {
         try {
-            List<Map<String, String>> result = noteService.queryTypes();
+            List<Map<String, String>> result = blogService.queryTypes();
             return ResEnv.success(result);
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("查询博客列表时失败! /note/write/queryTypes");
+            logger.error("查询博客列表时失败! /blog/write/queryTypes");
             return ResEnv.fail(e);
         }
     }
@@ -53,14 +52,14 @@ public class NoteController {
      */
     @RequestMapping(value = "/queryByID")
     @ResponseBody
-    public ResEnv<Note> queryByID(Integer id) {
+    public ResEnv<Blog> queryByID(Integer id) {
 
         try {
-            Note result = noteService.queryByID(id);
+            Blog result = blogService.queryByID(id);
             return ResEnv.success(result);
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("根据ID查询博客失败! /note/queryByID" + e);
+            logger.error("根据ID查询博客失败! /blog/queryByID" + e);
             return ResEnv.fail(e);
         }
 
@@ -74,10 +73,10 @@ public class NoteController {
      */
     @RequestMapping(value = "/queryByType")
     @ResponseBody
-    public ResEnv<List<Note>> queryByType(String type, Integer pageNum, Integer pageSize) {
+    public ResEnv<List<Blog>> queryByType(String type, Integer pageNum, Integer pageSize) {
 
         try {
-            List<Note> result = noteService.queryByType(type, pageNum, pageSize);
+            List<Blog> result = blogService.queryByType(type, pageNum, pageSize);
             return ResEnv.success(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -96,11 +95,11 @@ public class NoteController {
      * @param pageSize 每页数量
      * @return
      */
-    @RequestMapping(value = "/queryNoteList")
+    @RequestMapping(value = "/queryBlogList")
     @ResponseBody
-    public ResEnv<List<Note>> queryNoteList(String keyWords, Integer pageNum, Integer pageSize) {
+    public ResEnv<List<Blog>> queryBlogList(String keyWords, Integer pageNum, Integer pageSize) {
         try {
-            List<Note> result = noteService.queryNoteList(keyWords, pageNum, pageSize);
+            List<Blog> result = blogService.queryBlogList(keyWords, pageNum, pageSize);
             return ResEnv.success(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -111,39 +110,39 @@ public class NoteController {
 
 
     /**
-     * 添加笔记
+     * 添加博客
      *
-     * @param note 文章对象
+     * @param blog 文章对象
      * @return
      */
-    @RequestMapping(value = "/addNote", method = RequestMethod.POST)
+    @RequestMapping(value = "/addBlog", method = RequestMethod.POST)
     @ResponseBody
-    public ResEnv<Map<String, String>> addNote(Note note) {
+    public ResEnv<Map<String, String>> addBlog(Blog blog) {
         try {
-            Map<String, String> result = noteService.addNote(note);
+            Map<String, String> result = blogService.addBlog(blog);
             return ResEnv.success(result);
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("添加笔记时出错! addNote" + e);
+            logger.error("添加博客时出错! addBlog" + e);
             return ResEnv.fail(e);
         }
     }
 
     /**
-     * 更新笔记
+     * 更新博客
      *
-     * @param note 笔记对象
+     * @param blog 博客对象
      * @return 更新结果
      */
-    @RequestMapping("updateNote")
+    @RequestMapping("updateBlog")
     @ResponseBody
-    public ResEnv<Map<String, String>> updateNote(Note note) {
+    public ResEnv<Map<String, String>> updateBlog(Blog blog) {
         try {
-            Map<String, String> result = noteService.updateNote(note);
+            Map<String, String> result = blogService.updateBlog(blog);
             return ResEnv.success(result);
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("跟新笔记时出错！" + e);
+            logger.error("跟新博客时出错！" + e);
             return ResEnv.fail(e);
         }
     }
