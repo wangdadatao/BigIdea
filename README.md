@@ -1,4 +1,4 @@
-#Bigidea
+#  Bigidea
 
 Bigidea 不仅仅是个博客系统，前端基于Angular2 + ng2-Bootstrap  前往> https://github.com/wangdadatao/AngularJS2
 
@@ -7,7 +7,7 @@ Bigidea 不仅仅是个博客系统，前端基于Angular2 + ng2-Bootstrap  前�
 项目演示地址：http://www.wangdatao.com
 
 
-#技术选型
+#  技术选型
 
 核心框架：Spring Framework 4.1
 
@@ -27,7 +27,7 @@ Bigidea 不仅仅是个博客系统，前端基于Angular2 + ng2-Bootstrap  前�
 
 工具类：Apache Commons、Jackson 2.2、Jsoup、IK-analyzer、MyBatis-PageHelper
 
-#可供参考技术
+#  可供参考技术
 
 1、MyBatis 的多数据源配置，数据源之间的切换方法。
 
