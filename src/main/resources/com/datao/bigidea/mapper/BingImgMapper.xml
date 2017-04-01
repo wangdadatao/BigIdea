@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.datao.bigidea.mapper.BingImgMapper">
+
+    <!--插入新的数据-->
+    <insert id="insert" parameterType="com.datao.bigidea.entity.BingImg">
+        INSERT INTO b_bingImg
+        <include refid="setSQL"/>
+    </insert>
+
+    <!--查询首页图片-->
+    <select id="getIndexImg" resultType="com.datao.bigidea.entity.BingImg">
+        SELECT * FROM b_bingImg ORDER BY createTime DESC limit 1
+    </select>
+
+    <sql id="setSQL">
+        <set>
+            <if test="url != null">url = #{url},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+            <if test="urlMD5 != null">urlMD5 = #{urlMD5},</if>
+            <if test="copyRight != null">copyRight = #{copyRight},</if>
+            <if test="startDate != null">startDate = #{startDate},</if>
+            <if test="fullStartdate != null">fullStartdate = #{fullStartdate},</if>
+            <if test="endDate != null">endDate = #{endDate}</if>
+        </set>
+    </sql>
+
+
+</mapper>

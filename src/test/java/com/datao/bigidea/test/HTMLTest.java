@@ -9,6 +9,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
+import java.io.IOException;
+
 /**
  * Created by 王 海涛 on 2016/12/27.
  */
@@ -30,6 +32,21 @@ public class HTMLTest extends BaseTest {
             System.out.println(news.getCreateTime());
             System.out.println(news.getContentElement().toString());
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void getBingImg() {
+        String baseUrl = "http://www.bing.com";
+        String spUrl = "//hpimagearchive.aspx?format=xml&idx=0&n=1";
+        try {
+            Document document = Jsoup.connect(baseUrl + spUrl).get();
+            Elements element = document.select("images>image>url");
+
+            System.out.println(element.get(0).text());
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
