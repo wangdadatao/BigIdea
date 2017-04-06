@@ -47,8 +47,6 @@ public class BlogServiceImpl extends BaseService implements BlogService {
     public Blog queryByID(Integer id) {
         Blog blog = blogMapper.queryByID(id);
 
-        blog.setClickNum(blog.getClickNum() + 1);
-
         Blog newBlog = new Blog();
         newBlog.setId(blog.getId());
         newBlog.setClickNum(blog.getClickNum() + 1);

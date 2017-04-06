@@ -25,11 +25,10 @@
         *
         FROM
         b_blog
-        ORDER BY
         <if test="keyWords != null and keyWords !=''">
             WHERE title like "%"#{keyWords}"%"
         </if>
-        createTime DESC
+        ORDER BY createTime DESC
     </select>
 
     <!--添加博客-->

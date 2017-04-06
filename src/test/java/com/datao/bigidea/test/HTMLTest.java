@@ -3,13 +3,18 @@ package com.datao.bigidea.test;
 import com.datao.bigidea.BaseTest;
 import com.datao.bigidea.entity.News;
 import com.datao.bigidea.utils.contentextractor.ContentExtractor;
+import com.google.common.collect.Sets;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
 
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * Created by 王 海涛 on 2016/12/27.
@@ -50,6 +55,50 @@ public class HTMLTest extends BaseTest {
             e.printStackTrace();
         }
 
+    }
+
+    @Test
+    public void getZealer() {
+        String baseUrl = "http://huaban.com/favorite/photography/";
+        try {
+            Document document = Jsoup.connect(baseUrl).get();
+            Elements elements = document.select("img");
+            System.out.println(elements.size());
+
+            Set<String> urls = Sets.newHashSet();
+            for (Element e : elements) {
+                String src = e.attr("src");
+
+                if (src.substring(0, 2).equals("//")) {
+                    src = "http:" + src;
+                }
+
+                if (src.substring(0, 1).equals("/") && !src.substring(0, 2).equals("//")) {
+                    src = baseUrl + src;
+                }
+                urls.add(src);
+            }
+
+            for (String src : urls) {
+                String imageName = UUID.randomUUID().toString() + ".jpg";
+
+                URL url = new URL(src);
+                URLConnection uri = url.openConnection();
+
+                InputStream is = uri.getInputStream();
+                OutputStream os = new FileOutputStream(new File("f://imgs", imageName));
+
+                byte[] buf = new byte[1024];
+
+                int l = 0;
+                while ((l = is.read(buf)) != -1) {
+                    os.write(buf, 0, l);
+                }
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
