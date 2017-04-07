@@ -22,7 +22,7 @@ public class TaskJob {
     @Resource
     private PhotoService photoService;
 
-    @Scheduled(cron = "3 * * * * ?")
+    @Scheduled(cron = "0 3 * * * ?")
     public void updateGreenSource() {
         System.out.println("定时任务");
         try {

@@ -33,4 +33,28 @@ public class StringTest extends BaseTest {
         System.out.println(str.equals("//"));
     }
 
+    @Test
+    public void replaceTest() {
+        String str = "1011010111001101111000111101010101110010110010101011101111000101";
+        int[][] attr = new int[8][8];
+
+        char[] chars = str.toCharArray();
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                attr[i][j] = Integer.valueOf(String.valueOf(chars[i * 8 + j]));
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 8; i += 2) {
+            for (int j = 0; j < 8; j += 2) {
+                String oooo = "" + attr[i][j] + attr[i][j + 1] + attr[i + 1][j] + attr[i + 1][j + 1];
+                System.out.println(oooo);
+            }
+        }
+
+        System.out.println(attr[0][0]);
+    }
+
 }

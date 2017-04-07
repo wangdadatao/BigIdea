@@ -2,13 +2,16 @@ package com.datao.bigidea.test;
 
 import com.datao.bigidea.BaseTest;
 import com.datao.bigidea.entity.News;
+import com.datao.bigidea.utils.HttpUtil;
 import com.datao.bigidea.utils.contentextractor.ContentExtractor;
 import com.google.common.collect.Sets;
 import org.jsoup.Jsoup;
+import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Test;
+import org.springframework.util.StringUtils;
 
 import java.io.*;
 import java.net.URL;
@@ -59,15 +62,22 @@ public class HTMLTest extends BaseTest {
 
     @Test
     public void getZealer() {
-        String baseUrl = "http://huaban.com/favorite/photography/";
+        String baseUrl = "http://www.3gbizhi.com/lists-%E5%85%A8%E9%83%A8/2.html";
         try {
-            Document document = Jsoup.connect(baseUrl).get();
-            Elements elements = document.select("img");
+            Document document = HttpUtil.getDocument(baseUrl);
+            Elements elements = document.select("li img");
             System.out.println(elements.size());
 
             Set<String> urls = Sets.newHashSet();
             for (Element e : elements) {
                 String src = e.attr("src");
+
+                if (StringUtils.isEmpty(src)) {
+                    src = e.attr("_src");
+                    if (StringUtils.isEmpty(src)) {
+                        continue;
+                    }
+                }
 
                 if (src.substring(0, 2).equals("//")) {
                     src = "http:" + src;
@@ -76,17 +86,22 @@ public class HTMLTest extends BaseTest {
                 if (src.substring(0, 1).equals("/") && !src.substring(0, 2).equals("//")) {
                     src = baseUrl + src;
                 }
+                src = src.replace(".255.344.jpg", "");
+                System.out.println(src);
+
                 urls.add(src);
             }
 
             for (String src : urls) {
                 String imageName = UUID.randomUUID().toString() + ".jpg";
 
-                URL url = new URL(src);
-                URLConnection uri = url.openConnection();
-
-                InputStream is = uri.getInputStream();
-                OutputStream os = new FileOutputStream(new File("f://imgs", imageName));
+                InputStream is = null;
+                try {
+                    is = HttpUtil.getInputStream(src);
+                } catch (FileNotFoundException e) {
+                    continue;
+                }
+                OutputStream os = new FileOutputStream(new File("j://imgs", imageName));
 
                 byte[] buf = new byte[1024];
 
@@ -94,11 +109,12 @@ public class HTMLTest extends BaseTest {
                 while ((l = is.read(buf)) != -1) {
                     os.write(buf, 0, l);
                 }
+                is.close();
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.datao.bigidea.mapper.WallpaperMapper">
+
+    <!--插入图片-->
+    <insert id="insertList" parameterType="com.datao.bigidea.mapper.WallpaperMapper">
+        INSERT INTO b_img_bizhi
+        (baseUrl, `name`, createTime)
+        VALUES
+        <foreach collection="list" index="index" item="item" separator=",">
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                #{item.baseUrl}, #{item.name}, #{item.createTime}
+            </trim>
+        </foreach>
+    </insert>
+
+    <!--查询所有的图片-->
+    <select id="selectAll" resultType="com.datao.bigidea.entity.Wallpaper">
+        SELECT  * FROM  b_img_bizhi
+    </select>
+
+    <!--更新图片信息-->
+    <update id="update" parameterType="com.datao.bigidea.mapper.WallpaperMapper">
+        UPDATE b_img_bizhi
+        <include refid="setSQL"/>
+        WHERE id = #{id}
+    </update>
+
+    <sql id="setSQL">
+        <set>
+            <if test="baseUrl != null">baseUrl = #{baseUrl},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="size != null">size = #{size},</if>
+            <if test="uuidName != null">uuidName = #{uuidName},</if>
+            <if test="MD5 != null">MD5 = #{MD5},</if>
+            <if test="qiniuUrl != null">qiniuUrl = #{qiniuUrl},</if>
+            <if test="litUrl != null">litUrl = #{litUrl},</if>
+            <if test="litUuid != null">litUuid = #{litUuid},</if>
+            <if test="litMD5 != null">litMD5 = #{litMD5},</if>
+            <if test="litName != null">litName = #{litName},</if>
+            <if test="litSize != null">litSize = #{litSize},</if>
+            <if test="createTime != null">createTime = #{createTime},</if>
+            <if test="width != null">width = #{width},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="litWidth != null">litSize = #{litWidth},</if>
+            <if test="litHeight != null">litHeight = #{litHeight}</if>
+            <if test="feature != null">feature = #{feature}</if>
+        </set>
+    </sql>
+
+</mapper>

@@ -5,7 +5,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.*;
-import java.net.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 
@@ -128,7 +130,7 @@ public class HttpUtil {
     public static Document getDocument(String url, Boolean bool) throws IOException {
 
 
-        final String ProxyUser = "H76I1B601078978D";
+       /* final String ProxyUser = "H76I1B601078978D";
         final String ProxyPass = "68CD0F65620F0D3F";
         String ProxyHost = "proxy.abuyun.com";
         Integer ProxyPort = 9020;
@@ -141,7 +143,7 @@ public class HttpUtil {
             });
             proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(ProxyHost, ProxyPort));
         }
-
+        */
         Connection con = Jsoup.connect(url);//获取连接
         con.header("User-Agent", getUserAgents());//配置模拟浏览器
         con.header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
@@ -149,14 +151,34 @@ public class HttpUtil {
         con.header("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6");
         // con.header("Cookie", "ll=\"108169\"; bid=913hqGZRoVU; ps=y; push_noty_num=0; push_doumail_num=0; ap=1; viewed=\"2567698\"; gr_user_id=7c958f18-6d64-43c5-8083-9b70789b94bf; ct=y; __utmt=1; __utma=30149280.203547449.1484036285.1484211056.1484271809.15; __utmb=30149280.2.10.1484271809; __utmc=30149280; __utmz=30149280.1484271809.15.4.utmcsr=baidu|utmccn=(organic)|utmcmd=organic; __utmv=30149280.5238; __utma=223695111.1757280608.1484036291.1484211738.1484272109.13; __utmb=223695111.0.10.1484272109; __utmc=223695111; __utmz=223695111.1484211738.12.5.utmcsr=douban.com|utmccn=(referral)|utmcmd=referral|utmcct=/misc/sorry; _pk_ref.100001.4cf6=%5B%22%22%2C%22%22%2C1484272110%2C%22https%3A%2F%2Fwww.douban.com%2Fmisc%2Fsorry%3Foriginal-url%3Dhttps%253A%252F%252Fmovie.douban.com%252F%22%5D; _pk_id.100001.4cf6=10f77013632f552b.1484036291.13.1484272110.1484211741.; _pk_ses.100001.4cf6=*; _vwo_uuid_v2=CAF8E9E209E4834AD9F777B003A2C406|3415df9a9ca6324839afc3dac518f487");
 
-        if (bool) {
+        /*if (bool) {
             con.proxy(proxy);
-        }
+        }*/
         con.timeout(5000);
         con.followRedirects(true);
         Connection.Response rs = con.execute();//获取响应
         return Jsoup.parse(rs.body());
 
+    }
+
+    /**
+     * 根据URL获取inputStream
+     *
+     * @param str 地址
+     * @return 结果
+     * @throws IOException
+     */
+    public static InputStream getInputStream(String str) throws IOException {
+
+        URL url = new URL(str);
+        URLConnection uri = url.openConnection();
+
+        uri.setRequestProperty("User-Agent", getUserAgents());
+        uri.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+        uri.setRequestProperty("Accept-Encoding", "gzip, deflate, sdch, br");
+        uri.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.8,en;q=0.6");
+
+        return uri.getInputStream();
     }
 
 
